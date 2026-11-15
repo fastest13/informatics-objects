@@ -32,13 +32,14 @@
       });
       var bonus = E.filter(isStar);
       var qs = [];
-      App.sample(count, 2).forEach(function (e) { qs.push(build(e, false)); });
+      // Одна расчётная задача с кругами; остальные — логика и другие темы информатики.
+      App.sample(count, 1).forEach(function (e) { qs.push(build(e, false)); });
       App.sample(yesno, 1).forEach(function (e) { qs.push(build(e, true)); });
       App.sample(how, 1).forEach(function (e) { qs.push(build(e, false)); });
 
       var topics = [];
       T.forEach(function (t) { if (topics.indexOf(t.topic) < 0) topics.push(t.topic); });
-      App.sample(topics, 6).forEach(function (tp) {
+      App.sample(topics, 7).forEach(function (tp) {
         var pool = T.filter(function (t) { return t.topic === tp; });
         qs.push(build(App.sample(pool, 1)[0], false));
       });
