@@ -108,42 +108,55 @@ main.wrap { padding-bottom: 32px; }
 }
 .menu-cards {
   position: relative; z-index: 1;
-  width: 58%;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  width: 46%;
+  display: grid; grid-template-columns: 1fr; gap: 12px;
 }
 .menu-card {
-  display: flex; flex-direction: column; gap: 8px;
-  padding: 22px;
+  position: relative;
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px;
+  padding: 0;
+  text-decoration: none;
   text-align: left;
   font: inherit; color: inherit;
-  background: rgba(255, 255, 255, .86);
+  background: rgba(255, 255, 255, .94);
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
-  border: 1px solid var(--border);
-  border-left: 5px solid var(--accent);
-  border-radius: 14px;
+  border: 1.5px solid var(--accent);
+  border-radius: 8px;
+  overflow: hidden;
   box-shadow: var(--shadow);
   cursor: pointer;
   transition: transform .12s, box-shadow .12s;
   touch-action: manipulation;
 }
-.menu-card:hover { background: rgba(255, 255, 255, .94); transform: translateY(-2px); box-shadow: 0 2px 6px rgba(30,40,60,.14), 0 8px 20px rgba(30,40,60,.10); }
-.memo-pill {
-  grid-column: 1 / -1; justify-self: center;
-  display: inline-flex; align-items: center; justify-content: center;
-  min-height: 44px; padding: 10px 22px;
-  background: rgba(255, 255, 255, .86);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  box-shadow: var(--shadow);
-  color: var(--accent); font-weight: 700; text-decoration: none;
-  transition: transform .12s, box-shadow .12s, background-color .12s;
-  touch-action: manipulation;
+/* Заголовок «окна программы» */
+.menu-bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  height: 30px; padding: 0 10px;
+  background: linear-gradient(#3a5e96, var(--accent));
+  color: #fff;
+  font: 600 13px/1 ui-monospace, Menlo, Consolas, monospace;
+  letter-spacing: .02em;
+  white-space: nowrap;
 }
-.memo-pill:hover { background: rgba(255, 255, 255, .94); transform: translateY(-2px); box-shadow: 0 2px 6px rgba(30,40,60,.14), 0 8px 20px rgba(30,40,60,.10); }
-.memo-pill:focus-visible { outline: 3px solid rgba(44, 74, 122, .45); outline-offset: 2px; }
+.menu-btns { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .1em; }
+.menu-bar { grid-column: 1 / -1; }
+.menu-card .menu-title { grid-column: 1; padding: 12px 0 0 18px; }
+.menu-card .menu-desc { grid-column: 1; padding: 4px 0 14px 18px; }
+.menu-go {
+  grid-column: 2; grid-row: 2 / 4;
+  align-self: center;
+  margin: 0 18px 0 0;
+  padding: 5px 14px;
+  border: 1.5px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent-soft);
+  box-shadow: inset -2px -2px 0 rgba(44, 74, 122, .25);
+  color: var(--accent);
+  font: 600 13px/1.2 system-ui, sans-serif;
+}
+.menu-card:hover .menu-go { background: #fff; }
+.menu-card:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 2px 6px rgba(30,40,60,.14), 0 8px 20px rgba(30,40,60,.10); }
 .menu-title { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
 .menu-desc { color: var(--muted); font-size: .95rem; }
 
@@ -292,8 +305,10 @@ main.wrap { padding-bottom: 32px; }
   .hero { position: relative; inset: auto; height: 78vw; }
   .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 0% 35%; }
   .menu-cards { width: 100%; grid-template-columns: 1fr; gap: 10px; padding: 0 12px 12px; margin-top: -36px; }
-  .menu-card { padding: 16px; }
-  .memo-pill { justify-self: stretch; }
+  .menu-card { grid-template-columns: minmax(0, 1fr); }
+  .menu-card .menu-title { padding: 14px 16px 0; }
+  .menu-card .menu-desc { padding: 6px 16px 10px; }
+  .menu-go { grid-column: 1; grid-row: auto; justify-self: start; margin: 0 16px 14px; }
   .prompt-term { font-size: 1.4rem; }
   .card { padding: 16px; }
   .result { gap: 12px; padding: 14px; }

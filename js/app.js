@@ -9,7 +9,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function () {
-    var cards = document.querySelectorAll('.menu-card');
+    var cards = document.querySelectorAll('.menu-card[data-mode]');
     Array.prototype.forEach.call(cards, function (card) {
       card.addEventListener('click', function () {
         var name = card.getAttribute('data-mode');
