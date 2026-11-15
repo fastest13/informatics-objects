@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Информатика — конспект § 1–6</title>
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Rubik:wght@500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="css/style.css?v=20261115b">
+<style>
+/* Layout: one notebook column on graph paper ("тетрадь в клетку"); each § is a sheet; definitions are highlighter boxes. */
+:root{
+  --paper:#f7f9fd; --grid:rgba(44,74,122,.08); --card:#ffffff; --ink:#1b2232; --muted:#586379; --line:#d2dbec;
+  --blue:#2c4a7a; --blue-soft:#e6ecf6; --green:#22865a; --green-soft:#dcf2e6; --rose:#cf4368; --rose-soft:#fce4eb;
+  --hl:#fff2a6; --hl-ink:#2a2300; --hl-edge:#e6c52a;
+  --leaf:#86c86f; --leaf-dark:#3f8c50; --wood:#8a5a36; --wall:#f0b763; --roof:#c9573f; --sky:#d7e8ff; --birch:#fbfbf5;
+  --box:#1b2232; --on-box:#ffffff;
+  --f-head:"Rubik", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Nunito", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#10151e; --grid:rgba(126,162,255,.07); --card:#172030; --ink:#e7ecf5; --muted:#9ca8be; --line:#2c384f;
+  --blue:#86a9ff; --blue-soft:#1c2a4b; --green:#5ccf95; --green-soft:#15352a; --rose:#ff88a4; --rose-soft:#3c1d28;
+  --hl:#3b3410; --hl-ink:#fff3b5; --hl-edge:#a88f1c;
+  --leaf:#6fb95e; --leaf-dark:#3f8f52; --wood:#a87048; --wall:#d39d58; --roof:#c25a44; --sky:#1d2d48; --birch:#ebebe3;
+  --box:#05070c; --on-box:#ffffff; color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#10151e; --grid:rgba(126,162,255,.07); --card:#172030; --ink:#e7ecf5; --muted:#9ca8be; --line:#2c384f;
+  --blue:#86a9ff; --blue-soft:#1c2a4b; --green:#5ccf95; --green-soft:#15352a; --rose:#ff88a4; --rose-soft:#3c1d28;
+  --hl:#3b3410; --hl-ink:#fff3b5; --hl-edge:#a88f1c;
+  --leaf:#6fb95e; --leaf-dark:#3f8f52; --wood:#a87048; --wall:#d39d58; --roof:#c25a44; --sky:#1d2d48; --birch:#ebebe3;
+  --box:#05070c; --on-box:#ffffff; color-scheme:dark;
+}
+
+body{
+  background-color:var(--paper);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:22px 22px;
+  color:var(--ink); font:400 17px/1.6 var(--f-body);
+}
+.kwrap{max-width:880px;margin:0 auto;padding-block:28px 64px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
+  display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-head);letter-spacing:normal;text-wrap:balance;line-height:1.2;margin:0}
+p{margin:0}
+b,strong{font-weight:800}
+
+/* top */
+.top{display:flex;flex-direction:column;gap:12px}
+.eyebrow{font:600 13px/1 var(--f-head);letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+h1{font-size:clamp(28px,5vw,40px);font-weight:700}
+.legend{display:flex;gap:10px;align-items:flex-start;color:var(--muted);font-size:15px;max-width:62ch}
+.legend .bang{flex:none}
+.toc{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:4px 0 0;list-style:none}
+.toc a{display:inline-flex;gap:8px;align-items:baseline;padding:7px 12px;border:1.5px solid var(--line);border-radius:999px;
+  background:var(--card);color:var(--ink);text-decoration:none;font-size:15px;font-weight:600}
+.toc a span{font-family:var(--f-head);color:var(--blue);font-weight:700}
+.toc a:hover,.toc a:focus-visible{border-color:var(--blue);outline:none}
+
+/* sheet per paragraph */
+.par{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:28px clamp(16px,4vw,40px) 34px;
+  display:flex;flex-direction:column;gap:18px;min-width:0}
+.ph{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;padding-bottom:6px;border-bottom:3px solid var(--blue)}
+.pn{font:700 clamp(30px,6vw,44px)/1 var(--f-head);color:var(--blue)}
+.ph h2{font-size:clamp(22px,4vw,30px);font-weight:700}
+h3{font-size:20px;font-weight:600;color:var(--blue);margin-top:14px}
+.kw{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none;align-items:center}
+.kw::before{content:"Ключевые слова:";font:600 12px/1 var(--f-head);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-right:4px}
+.kw li{font-size:14px;padding:2px 10px;border-radius:6px;background:var(--blue-soft);color:var(--ink)}
+.par p,.par li{max-width:68ch}
+ul.dots{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px}
+ul.dots li::marker{color:var(--blue)}
+.ex{color:var(--muted);font-size:16px}
+.ex i{color:var(--ink)}
+
+/* definition = highlighter box, text verbatim from the textbook */
+.def{display:flex;gap:14px;align-items:flex-start;background:var(--hl);color:var(--hl-ink);
+  border-left:5px solid var(--hl-edge);border-radius:4px 10px 10px 4px;padding:14px 18px 14px 14px}
+.def p{max-width:none}
+.def p+p{margin-top:6px}
+.def ol{margin:6px 0 0;padding-left:22px}
+.bang{flex:none;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;
+  background:var(--blue);color:var(--card);font:700 16px/1 var(--f-head);margin-top:1px}
+
+/* small cards */
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr))}
+.kcell{border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.kcell h4{margin:0;font:600 16px/1.3 var(--f-head)}
+.kcell p{font-size:15.5px}
+.kcell .q{font-size:14px;color:var(--muted)}
+.c-blue{border-color:var(--blue)} .c-blue h4{color:var(--blue)}
+.c-green{border-color:var(--green)} .c-green h4{color:var(--green)}
+.c-rose{border-color:var(--rose)} .c-rose h4{color:var(--rose)}
+.c-amber{border-color:var(--hl-edge)} .c-amber h4{color:var(--ink)}
+
+/* figures */
+figure{margin:4px 0;display:flex;flex-direction:column;gap:8px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+figure svg{display:block;width:100%;height:auto}
+figcaption{font-size:14.5px;color:var(--muted);max-width:68ch}
+figcaption b{color:var(--ink)}
+svg text{font-family:var(--f-body);fill:var(--ink)}
+.t-sm{font-size:13px} .t-md{font-size:14px} .t-lg{font-size:16px;font-weight:700}
+.t-mut{fill:var(--muted)} .t-b{fill:var(--blue)} .t-r{fill:var(--rose)} .t-g{fill:var(--green)}
+.t-head{font-family:var(--f-head);font-weight:700}
+.t-up{font-size:12px;font-weight:800;letter-spacing:.08em}
+.f-leaf{fill:var(--leaf)} .f-leafd{fill:var(--leaf-dark)} .f-wood{fill:var(--wood)} .f-wall{fill:var(--wall)}
+.f-roof{fill:var(--roof)} .f-sky{fill:var(--sky);stroke:var(--wood);stroke-width:2} .f-birch{fill:var(--birch);stroke:var(--ink);stroke-width:1}
+.f-ink{fill:var(--ink)} .f-rose{fill:var(--rose)} .f-hi{fill:#ffffff;fill-opacity:.45}
+.f-card{fill:var(--card);stroke:var(--blue);stroke-width:1.6} .f-blue{fill:var(--blue)}
+.f-box{fill:var(--box);stroke:var(--line);stroke-width:1.5} .t-onbox{fill:var(--on-box)}
+.s-line{stroke:var(--line);stroke-width:2;fill:none} .s-dash{stroke:var(--line);stroke-width:2;fill:none;stroke-dasharray:6 6}
+.s-mut{stroke:var(--muted);stroke-width:1.6;fill:none}
+.s-blue{stroke:var(--blue);stroke-width:2.2;fill:none} .s-rose{stroke:var(--rose);stroke-width:2.2;fill:none}
+.s-green{stroke:var(--green);stroke-width:2;fill:none}
+.s-wood{stroke:var(--wood);stroke-width:4;fill:none;stroke-linecap:round}
+.sys{fill:var(--green-soft);stroke:var(--green);stroke-width:2;stroke-dasharray:8 6}
+.sa{fill:var(--blue);fill-opacity:.2;stroke:var(--blue);stroke-width:2}
+.sb{fill:var(--green);fill-opacity:.22;stroke:var(--green);stroke-width:2}
+.sr{fill:var(--rose);fill-opacity:.22;stroke:var(--rose);stroke-width:2}
+.frame{fill:none;stroke:var(--line);stroke-width:1.5}
+.mk{fill:var(--muted)} .mk-b{fill:var(--blue)} .mk-r{fill:var(--rose)}
+/* tree diagrams (drawn by script) */
+.nb{fill:var(--card);stroke:var(--blue);stroke-width:1.6}
+.nb.root{fill:var(--blue-soft)}
+.tt{font-size:15px;font-weight:700;text-anchor:middle}
+.tn{font-size:13px;text-anchor:middle;fill:var(--muted)}
+.tl{stroke:var(--muted);stroke-width:1.6;fill:none}
+
+.grid.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.grid.g3{grid-template-columns:repeat(6,minmax(0,1fr))}
+.grid.g3>.kcell{grid-column:span 2}
+.grid.g3>.kcell:nth-child(n+4){grid-column:span 3}
+@media (max-width:520px){.grid.g2,.grid.g3{grid-template-columns:1fr}.grid.g3>.kcell,.grid.g3>.kcell:nth-child(n+4){grid-column:auto}}
+.euler{display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:520px){.euler{grid-template-columns:1fr}}
+.euler figure{border:1.5px solid var(--line);border-radius:10px;padding:12px;margin:0}
+.euler h4{margin:0;font:600 16px/1.2 var(--f-head)}
+.euler svg{max-width:300px;margin:0 auto}
+.side{display:grid;gap:16px;grid-template-columns:minmax(0,3fr) minmax(0,2fr);align-items:center}
+@media (max-width:620px){.side{grid-template-columns:1fr}}
+
+/* tables */
+.tbl{overflow-x:auto;padding:2px}
+table{border-collapse:collapse;width:calc(100% - 3px);margin-left:1px;font-size:15.5px}
+@media (max-width:520px){table{min-width:420px}}
+th,td{border:1.5px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--blue-soft);font:600 14px/1.3 var(--f-head)}
+td.n{font-variant-numeric:tabular-nums}
+
+/* file name anatomy */
+.fname{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:4px;font-family:var(--f-mono);padding:8px 0}
+.fname .part{display:flex;flex-direction:column;align-items:center;gap:6px}
+.fname code{font:700 clamp(22px,5vw,34px)/1.1 var(--f-mono);padding:6px 10px;border-radius:8px}
+.fname .nm code{background:var(--blue-soft);color:var(--blue)}
+.fname .dot code{color:var(--rose);padding:6px 2px}
+.fname .ext code{background:var(--green-soft);color:var(--green)}
+.fname small{font:600 13px/1.2 var(--f-body);color:var(--muted)}
+.bad{font-family:var(--f-mono);font-weight:700;color:var(--rose);letter-spacing:.12em}
+
+/* folder tree */
+.ftree,.ftree ul{list-style:none;margin:0;padding:0}
+.ftree ul{margin-left:11px;padding-left:18px;border-left:2px solid var(--line)}
+.ftree li{position:relative;padding:3px 0}
+.ftree ul>li::before{content:"";position:absolute;left:-18px;top:16px;width:14px;border-top:2px solid var(--line)}
+.ftree .it{display:inline-flex;align-items:center;gap:8px;font-size:16px}
+.ftree .file{font-family:var(--f-mono);font-size:14.5px}
+.ico{width:20px;height:18px;flex:none}
+
+/* chains (units, Linnaeus) */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px}
+.chain .u{font:700 17px/1 var(--f-head);padding:9px 12px;border-radius:8px;border:2px solid var(--blue);background:var(--card)}
+.chain .op{font:700 13px/1 var(--f-mono);color:var(--rose);padding:0 4px}
+.ranks{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));padding:0;margin:0;list-style:none;counter-reset:r}
+.ranks li{border:1.5px solid var(--green);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.ranks b{font:600 12px/1.2 var(--f-head);letter-spacing:.06em;text-transform:uppercase;color:var(--green)}
+.ranks span{font-size:15px;overflow-wrap:anywhere}
+
+.math{font-family:var(--f-mono);font-size:15px;background:var(--blue-soft);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-variant-numeric:tabular-nums;overflow-x:auto}
+.math span{white-space:nowrap}
+
+.plane{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.plane .pc{padding:8px 12px;border-radius:8px;border:1.5px dashed var(--line);font-size:15px}
+.plane .pc s{color:var(--muted)}
+.plane .eq{font:700 20px/1 var(--f-head);color:var(--muted)}
+.plane .ok{border:2px solid var(--green);background:var(--green-soft);font-weight:800}
+
+.foot{color:var(--muted);font-size:14px;text-align:center}
+
+/* §6: PC as a system (fig. 20) */
+.pc{border:2px solid var(--blue);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.pc-title{font:700 17px/1.2 var(--f-head);text-align:center}
+.pc-cols{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.pc-col{border:2px solid;border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--card);min-width:0}
+.pc-col h4{margin:0 0 2px;font:600 15.5px/1.25 var(--f-head);text-align:center}
+.pc-col>span,.pc-os span{display:block;text-align:center;padding:8px;border-radius:8px;border:1.5px solid var(--line);font-size:15px;font-weight:600}
+.pc-os{border:1.5px solid var(--rose);border-radius:10px;padding:8px;display:flex;flex-direction:column;gap:6px;background:var(--rose-soft)}
+.pc-os b{text-align:center;font-family:var(--f-head);font-weight:600;font-size:15px}
+.pc-os span{background:var(--card)}
+.pc-col>span small{display:block;font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+.fname.sm code{font-size:clamp(15px,3.6vw,22px)}
+.px1{fill:var(--ink)} .px0{fill:var(--card);stroke:var(--line);stroke-width:1}
+.t-mono{font-family:var(--f-mono);font-size:15px;font-weight:700}
+
+a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+@media print{
+  body{background:#fff;font-size:15px}
+  .kwrap{padding:0 4px;gap:18px;max-width:none}
+  .scroll,.tbl,.math{overflow:visible}
+  figure svg{min-width:0!important}
+  table{min-width:0;width:calc(100% - 4px);margin-left:1px}
+  .math span{white-space:normal}
+  .foot{display:none}
+  .toc{display:none}
+  .par{border:none;padding:0;gap:12px;break-before:page}
+  #p1{break-before:auto}
+  h3{margin-top:6px;break-after:avoid}
+  .def{padding:10px 14px 10px 12px}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  figure,.def,table,tr,.kcell,.grid,.math,.chain,.ranks,.plane,.pc,.pc-col,.side,.ftree,p,li,.kw{break-inside:avoid}
+  .ph,h3,h4{break-after:avoid}
+  .euler{gap:10px}
+  .ftree li{break-inside:auto}
+}
+
+/* --- интеграция с css/style.css --- */
+@page{size:A4;margin:12mm}
+body{overflow-wrap:normal}
+.kwrap,.kwrap *{box-sizing:content-box}
+.kbar{max-width:880px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px));
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.kbar .back-link{color:var(--blue);font:600 16px/1.2 var(--f-head);text-decoration:none}
+.kbar .back-link:hover{text-decoration:underline}
+.kbar .btn{background:var(--blue);color:#fff;border-color:var(--blue);font-family:var(--f-head)}
+.kbar .btn:hover{background:#1f3659}
+.top-head{display:flex;align-items:center;gap:22px}
+.top-head>div{display:flex;flex-direction:column;gap:12px;min-width:0}
+.top-pic{width:140px;height:auto;flex:none;display:block}
+@media (max-width:520px){.top-head{gap:12px}.top-pic{width:84px}}
+@media print{.kbar,.cookie-banner,.cookie-refused{display:none!important}.top-pic{width:100px}}
+</style>
+</head>
+<body data-page="pamyatka">
+<div class="kbar">
+  <a class="back-link" href="index.html">← На главную</a>
+  <button type="button" class="btn primary" id="memo-print">Распечатать</button>
+</div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk"/></marker>
+    <marker id="ahb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-b"/></marker>
+    <marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="mk-r"/></marker>
+  </defs>
+</svg>
+
+<main class="kwrap">
+
+<header class="top">
+  <div class="top-head">
+    <img class="top-pic" src="images/boy-study.png" alt="Мальчик рисует схемы в тетради" width="480" height="480">
+    <div>
+      <div class="eyebrow">Информатика · 6 класс · §1–§6</div>
+      <h1>Объекты, множества и системы</h1>
+    </div>
+  </div>
+  <p class="legend"><span class="bang">!</span><span>Жёлтые блоки — определения из учебника и презентаций к урокам, слово в слово. Их нужно знать наизусть. Остальное — главные мысли коротко и схемы.</span></p>
+  <ul class="toc">
+    <li><a href="#p1"><span>§1</span>Объекты окружающего мира</a></li>
+    <li><a href="#p2"><span>§2</span>Компьютерные объекты</a></li>
+    <li><a href="#p3"><span>§3</span>Отношения объектов</a></li>
+    <li><a href="#p4"><span>§4</span>Разновидности и классификация</a></li>
+    <li><a href="#p5"><span>§5</span>Системы объектов</a></li>
+    <li><a href="#p6"><span>§6</span>Компьютер как система</a></li>
+  </ul>
+</header>
+
+<!-- ================= §1 ================= -->
+<section class="par" id="p1">
+  <header class="ph"><span class="pn">§1</span><h2>Объекты окружающего мира</h2></header>
+  <ul class="kw"><li>объект</li><li>множество</li><li>общее имя</li><li>единичное имя</li><li>собственное имя</li><li>свойства объекта</li><li>действия объекта</li><li>поведение объекта</li><li>состояние объекта</li></ul>
+
+  <h3>Объекты и множества</h3>
+  <div class="def"><span class="bang">!</span><div><p><b>Объект</b> — это любая часть окружающей действительности (предмет, процесс, явление), воспринимаемая человеком как единое целое. Объектами принято называть всё то, на что обращено внимание человека.</p></div></div>
+
+  <div class="grid">
+    <div class="kcell c-blue"><h4>Предметы</h4><p>телефон, стол, книга, кошка</p></div>
+    <div class="kcell c-green"><h4>Процессы</h4><p>каникулы, учёба, чтение, поездка</p></div>
+    <div class="kcell c-rose"><h4>Явления</h4><p>гроза, солнечное затмение, снегопад</p></div>
+  </div>
+
+  <div class="def"><span class="bang">!</span><div><p><b>Множество</b> — это совокупность, набор, коллекция объектов. Объекты, составляющие некоторое множество, называются его <b>элементами</b>.</p></div></div>
+  <ul class="dots">
+    <li>В множестве может быть три, два, один элемент — или ни одного: <b>пустое</b> множество (например, множество отличников в классе).</li>
+    <li><b>Конечное</b> множество — буквы русского алфавита. <b>Бесконечное</b> — натуральные числа.</li>
+  </ul>
+
+  <h3>Имена объектов</h3>
+  <p>Каждый объект имеет <b>имя</b>, которое позволяет отличать его от других объектов. Имя отвечает на вопрос «Что это такое?» или «Кто это такой?». У одного объекта может быть много имён: собаку зовут Каштанкой, пёсиком, домашним животным или просто животным.</p>
+  <div class="def"><span class="bang">!</span><div><p>Имена бывают <b>общими</b>, обозначающими множество объектов, и <b>единичными</b>, обозначающими конкретный объект в некотором множестве.</p></div></div>
+
+  <div class="grid">
+    <div class="kcell c-blue">
+      <h4>Как выбрать общее имя</h4>
+      <p>Общее имя выбирают так, чтобы оно:<br>1) подходило каждому объекту из множества;<br>2) наиболее точно описывало рассматриваемое множество.</p>
+      <p class="q">Лондон, Манчестер, Ливерпуль → лучше всего «город в Англии», а не просто «город».</p>
+    </div>
+    <div class="kcell c-green">
+      <h4>Как выбрать единичное имя</h4>
+      <p>У всех объектов множества имена должны быть разными.</p>
+      <p class="q">Одна берёза во дворе — хватит имени «берёза». Две берёзы — нужны «берёза у окна» и «берёза у колодца».</p>
+    </div>
+  </div>
+
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 680 230" role="img" aria-label="Двор: дом, берёза у окна, яблоня, ель, берёза у колодца, колодец" style="min-width:460px">
+      <ellipse cx="340" cy="140" rx="222" ry="86" class="s-dash"/>
+      <!-- дом -->
+      <rect x="22" y="110" width="92" height="70" class="f-wall"/>
+      <polygon points="12,112 68,68 124,112" class="f-roof"/>
+      <rect x="80" y="136" width="22" height="44" class="f-wood"/>
+      <rect x="34" y="126" width="28" height="24" class="f-sky"/>
+      <text x="68" y="204" class="t-sm t-mut" text-anchor="middle">дом</text>
+      <!-- берёза у окна -->
+      <ellipse cx="200" cy="92" rx="30" ry="42" class="f-leaf"/>
+      <rect x="195" y="108" width="10" height="78" class="f-birch"/>
+      <rect x="195" y="126" width="6" height="3" class="f-ink"/><rect x="199" y="146" width="6" height="3" class="f-ink"/><rect x="195" y="166" width="5" height="3" class="f-ink"/>
+      <!-- яблоня -->
+      <rect x="284" y="128" width="12" height="58" class="f-wood"/>
+      <circle cx="290" cy="104" r="42" class="f-leafd"/>
+      <circle cx="272" cy="94" r="5" class="f-rose"/><circle cx="305" cy="86" r="5" class="f-rose"/><circle cx="296" cy="118" r="5" class="f-rose"/><circle cx="276" cy="122" r="5" class="f-rose"/><circle cx="312" cy="110" r="5" class="f-rose"/>
+      <!-- ель -->
+      <rect x="380" y="168" width="10" height="18" class="f-wood"/>
+      <polygon points="385,52 361,100 409,100" class="f-leafd"/>
+      <polygon points="385,76 353,132 417,132" class="f-leafd"/>
+      <polygon points="385,104 345,170 425,170" class="f-leafd"/>
+      <!-- берёза у колодца -->
+      <ellipse cx="480" cy="92" rx="30" ry="42" class="f-leaf"/>
+      <rect x="475" y="108" width="10" height="78" class="f-birch"/>
+      <rect x="479" y="128" width="6" height="3" class="f-ink"/><rect x="475" y="150" width="6" height="3" class="f-ink"/><rect x="479" y="170" width="5" height="3" class="f-ink"/>
+      <!-- колодец -->
+      <rect x="586" y="100" width="6" height="42" class="f-wood"/><rect x="640" y="100" width="6" height="42" class="f-wood"/>
+      <polygon points="576,104 616,78 656,104" class="f-roof"/>
+      <rect x="580" y="140" width="72" height="40" class="f-wall"/>
+      <line x1="580" y1="153" x2="652" y2="153" class="s-mut"/><line x1="580" y1="166" x2="652" y2="166" class="s-mut"/>
+      <text x="616" y="204" class="t-sm t-mut" text-anchor="middle">колодец</text>
+      <!-- подписи -->
+      <text x="200" y="210" class="t-md" text-anchor="middle" font-weight="700">берёза у окна</text>
+      <text x="290" y="210" class="t-md" text-anchor="middle" font-weight="700">яблоня</text>
+      <text x="385" y="210" class="t-md" text-anchor="middle" font-weight="700">ель</text>
+      <text x="480" y="210" class="t-md" text-anchor="middle" font-weight="700">берёза у колодца</text>
+    </svg></div>
+    <figcaption>Во дворе две берёзы, поэтому одного имени «берёза» мало: у каждой должно быть своё единичное имя.</figcaption>
+  </figure>
+
+  <div class="def"><span class="bang">!</span><div><p>Чтобы обойтись без таких длинных обозначений, для некоторых видов объектов (людей, домашних животных, книг, журналов, кинофильмов, географических объектов, планет и т. д.) используются <b>собственные имена</b>. Например: Александр Сергеевич Пушкин, роман «Война и мир», Мухтар, Москва, Ангара, кинофильм «Морозко», Луна.</p></div></div>
+
+  <h3>Объекты изучения в информатике</h3>
+  <p>Разные науки изучают одни и те же объекты с разных сторон: космические тела — астрономия, земную поверхность — география, растения и животных — биология.</p>
+  <div class="def"><span class="bang">!</span><div><p><b>Информатика</b> — наука, изучающая закономерности протекания процессов передачи, хранения и обработки информации в природе, обществе, технике, а также способы автоматизации этих процессов с помощью компьютера.</p></div></div>
+  <p>Объектами изучения в информатике являются информация, информационный процесс, алгоритм, исполнитель, компьютер, включая его аппаратное и программное обеспечение, и т. д.</p>
+
+  <h3>Признаки объектов</h3>
+  <p>Кроме имени в сообщении об объекте человек может подробно перечислить его <b>признаки</b>: свойства, действия, поведение, состояния.</p>
+  <div class="grid g2">
+    <div class="kcell c-blue"><h4>Свойства</h4><p class="q">Какой он? Чем отличается от других?</p></div>
+    <div class="kcell c-green"><h4>Действия</h4><p class="q">Что он делает? Что с ним можно делать?</p></div>
+    <div class="kcell c-amber"><h4>Поведение</h4><p class="q">Как именно он это делает, по шагам?</p></div>
+    <div class="kcell c-rose"><h4>Состояние</h4><p class="q">Каким он стал сейчас?</p></div>
+  </div>
+
+  <div class="def"><span class="bang">!</span><div><p><b>Свойства</b> объектов отвечают на вопросы: «Чем может отличаться один объект от другого?», «Что может измениться у объекта при выполнении действия?».</p></div></div>
+  <p class="ex">Собаки отличаются окрасом, города — численностью населения, реки — длиной.</p>
+  <div class="def"><span class="bang">!</span><div><p>Каждое свойство определяется некоторой <b>величиной</b> и тем <b>значением</b>, которое она принимает.</p></div></div>
+  <p class="ex">Величины: цвет, материал, форма, длина. Значения: красный, железный, прямоугольный, 2 м.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Объект</th><th>Свойство</th><th>Величина</th><th>Значение величины</th></tr></thead>
+    <tbody>
+      <tr><td>Человек</td><td>Голубоглазый</td><td>Цвет глаз</td><td>Голубой</td></tr>
+      <tr><td>Человек</td><td>Высокий</td><td>Рост</td><td class="n">&gt; 180 см</td></tr>
+      <tr><td>Дом</td><td>С пятью окнами</td><td>Количество окон</td><td class="n">5</td></tr>
+      <tr><td>Файл</td><td>Большой</td><td>Размер</td><td class="n">34,6 Мбайт</td></tr>
+      <tr><td>Файл</td><td>Графический</td><td>Тип</td><td>Рисунок BMP</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="def"><span class="bang">!</span><div><p>Возможности объекта обозначаются именами <b>действий</b>, отвечающими на вопросы: «Что он может делать?» (активное действие) или «Что с ним можно делать?» (пассивное действие).</p></div></div>
+  <p class="ex">Далматин <i>бегает</i> (активное). Воздушный шар можно <i>надуть</i>, файл — <i>переименовать, удалить</i> (пассивное).</p>
+
+  <div class="def"><span class="bang">!</span><div><p>Чтобы описать <b>поведение</b> объекта, нужно не просто назвать имена действий, а составить пошаговое описание каждого действия, свойственного этому объекту.</p></div></div>
+  <p class="ex">Одно и то же действие разные объекты выполняют по-разному: птицы, воздушные шары и вертолёты летают неодинаково.</p>
+
+  <div class="def"><span class="bang">!</span><div><p>Говоря о <b>состоянии</b> объекта, мы называем или подразумеваем определённое сочетание всех или некоторых свойств этого объекта.</p></div></div>
+  <p>Когда с объектом выполняется действие, его состояние изменяется.</p>
+
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 700 290" role="img" aria-label="Состояния воздушного шарика: сдутый, надутый, летит, лопнул" style="min-width:520px">
+      <text x="90" y="20" class="t-lg t-head" text-anchor="middle">сдутый</text>
+      <text x="265" y="20" class="t-lg t-head" text-anchor="middle">надутый</text>
+      <text x="440" y="20" class="t-lg t-head" text-anchor="middle">летит</text>
+      <text x="615" y="20" class="t-lg t-head" text-anchor="middle">лопнул</text>
+      <line x1="20" y1="200" x2="680" y2="200" class="s-dash"/>
+      <!-- 1 -->
+      <ellipse cx="90" cy="176" rx="11" ry="13" class="f-rose"/>
+      <polygon points="86,192 94,192 90,187" class="f-rose"/>
+      <path d="M90 192 q4 4 0 8" class="s-mut"/>
+      <!-- 2 -->
+      <ellipse cx="265" cy="104" rx="36" ry="44" class="f-rose"/>
+      <ellipse cx="252" cy="88" rx="8" ry="13" class="f-hi"/>
+      <polygon points="260,154 270,154 265,147" class="f-rose"/>
+      <path d="M265 154 q-8 12 0 23 t0 23" class="s-mut"/>
+      <!-- 3 -->
+      <ellipse cx="440" cy="84" rx="34" ry="42" class="f-rose"/>
+      <ellipse cx="428" cy="70" rx="7" ry="12" class="f-hi"/>
+      <polygon points="435,132 445,132 440,125" class="f-rose"/>
+      <path d="M440 132 q8 10 0 20 t0 20" class="s-mut"/>
+      <line x1="492" y1="196" x2="492" y2="46" class="s-blue" marker-end="url(#ahb)"/>
+      <text x="500" y="128" class="t-md t-b" font-weight="700">30 м</text>
+      <!-- 4 -->
+      <polygon points="615,72 625,98 654,92 634,113 652,138 622,128 615,154 606,128 578,138 596,113 576,92 605,98" class="f-rose"/>
+      <text x="615" y="119" class="t-md t-onbox" text-anchor="middle" font-weight="800">БАХ!</text>
+      <!-- действия -->
+      <line x1="112" y1="188" x2="244" y2="188" class="s-rose" marker-end="url(#ahr)"/>
+      <text x="178" y="180" class="t-md t-r" text-anchor="middle" font-weight="700">надуть</text>
+      <line x1="285" y1="188" x2="425" y2="188" class="s-rose" marker-end="url(#ahr)"/>
+      <text x="355" y="180" class="t-md t-r" text-anchor="middle" font-weight="700">отпустить</text>
+      <line x1="458" y1="188" x2="596" y2="188" class="s-rose" marker-end="url(#ahr)"/>
+      <text x="530" y="180" class="t-md t-r" text-anchor="middle" font-weight="700">уколоть</text>
+      <!-- значения величин -->
+      <g class="t-md" text-anchor="middle">
+        <text x="90" y="228">объём: 0 л</text><text x="90" y="250">высота: 0 м</text><text x="90" y="272">дырка: нет</text>
+        <text x="265" y="228" class="t-r" font-weight="800">объём: 5 л</text><text x="265" y="250">высота: 0 м</text><text x="265" y="272">дырка: нет</text>
+        <text x="440" y="228">объём: 5 л</text><text x="440" y="250" class="t-r" font-weight="800">высота: 30 м</text><text x="440" y="272">дырка: нет</text>
+        <text x="615" y="228" class="t-r" font-weight="800">объём: 0 л</text><text x="615" y="250" class="t-r" font-weight="800">высота: 0 м</text><text x="615" y="272" class="t-r" font-weight="800">дырка: есть</text>
+      </g>
+    </svg></div>
+    <figcaption>Состояние шарика — это сочетание значений трёх величин: <b>объём</b>, <b>высота</b>, <b>повреждённость</b>. Каждое действие меняет состояние (красным — что изменилось). Когда шарик лопнет и упадёт, изменятся сразу все три величины.</figcaption>
+  </figure>
+</section>
+
+<!-- ================= §2 ================= -->
+<section class="par" id="p2">
+  <header class="ph"><span class="pn">§2</span><h2>Компьютерные объекты</h2></header>
+  <ul class="kw"><li>типы компьютеров</li><li>программное обеспечение</li><li>операционная система</li><li>файл</li><li>имя файла</li><li>папка</li><li>путь к файлу</li><li>полное имя файла</li><li>двоичный код</li><li>размер файла</li><li>бит, байт, килобайт, мегабайт, гигабайт</li></ul>
+
+  <h3>Разнообразие компьютеров</h3>
+  <p>Компьютер — важнейший объект не только информатики, но и жизни современного человека.</p>
+  <figure>
+    <div class="scroll"><div data-tree="computers" aria-label="Типы компьютеров"></div></div>
+  </figure>
+  <div class="def"><span class="bang">!</span><div><p><b>Суперкомпьютеры</b> — очень большие компьютеры, значительно превосходящие по своим техническим параметрам и скорости вычислений все другие компьютеры.</p></div></div>
+
+  <h3>Файлы и папки</h3>
+  <p>Все программы и данные в устройствах долговременной памяти компьютера хранятся в виде файлов, которые, в свою очередь, группируются в папки. Основные компьютерные объекты — файлы (документы и приложения), папки.</p>
+  <div class="def"><span class="bang">!</span><div><p><b>Файл</b> — это информация, хранящаяся в долговременной памяти как единое целое и обозначенная именем.</p></div></div>
+
+  <div class="def"><span class="bang">!</span><div><p><b>Имя файла</b>, как правило, состоит из двух частей, разделённых точкой: <b>собственно имени</b> файла и <b>расширения</b>. Расширения необязательны, но они широко используются: расширение позволяет пользователю, не открывая файл, определить, какого типа данные (программа, текст, рисунок и т. д.) в нём содержатся.</p></div></div>
+
+  <figure>
+    <div class="fname" aria-label="Доклад.docx: имя, точка, расширение">
+      <div class="part nm"><code>Доклад</code><small>собственно имя</small></div>
+      <div class="part dot"><code>.</code><small>точка</small></div>
+      <div class="part ext"><code>docx</code><small>расширение</small></div>
+    </div>
+  </figure>
+
+  <ul class="dots">
+    <li>Имя может быть длиной до 255 символов, в нём можно использовать русские буквы и пробелы. Расширение пишут после точки, обычно это 3 символа.</li>
+    <li>В Windows в имени файла <b>нельзя</b> использовать: <span class="bad">\ / : * ? " &lt; &gt; |</span></li>
+    <li>В Linux можно всё, кроме <span class="bad">/</span>, и Linux различает большие и маленькие буквы: FILE.txt, file.txt и FiLe.Txt — три разных файла.</li>
+  </ul>
+
+  <div class="def"><span class="bang">!</span><div><p>Файлы, содержащие данные (рисунки, тексты), ещё называют <b>документами</b>. Файлы-документы создаются и обрабатываются с помощью <b>прикладных программ</b> (приложений).</p></div></div>
+  <p>Свойства файла: <b>тип, размер, дата создания, дата последней модификации</b>.</p>
+
+  <div class="grid">
+    <div class="kcell c-blue"><h4>Текстовые</h4><p>txt, doc, rtf, odt</p><p class="q">документы с текстом</p></div>
+    <div class="kcell c-green"><h4>Графические</h4><p>bmp, jpg и др.</p><p class="q">изображения</p></div>
+    <div class="kcell c-rose"><h4>Звуковые</h4><p>wav, mid, mp3 и др.</p><p class="q">голоса и музыка</p></div>
+  </div>
+
+  <div class="def"><span class="bang">!</span><div><p>Все файлы хранятся в определённой системе: в <b>папках</b> (каталогах), которые, в свою очередь, могут содержаться в других папках (быть вложенными в них) и т. д. Каждый каталог также получает собственное имя.</p><p><b>Папка</b> — группа файлов, объединённых по некоторому принципу, имеющая имя.</p><p>Папка может входить в состав другой, внешней по отношению к ней папки. Папка (каталог) самого верхнего уровня называется <b>корневой папкой</b> (корневым каталогом).</p></div></div>
+
+  <div class="side">
+    <figure>
+      <ul class="ftree" aria-label="Пример вложенных папок">
+        <li><span class="it"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><rect x="1" y="4" width="18" height="10" rx="2" class="f-card"/><circle cx="15" cy="9" r="1.6" class="f-blue"/></svg><b>Диск C:</b></span>
+          <ul>
+            <li><span class="it"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M1 3h6l2 2h10v12H1z" class="f-wall"/></svg>Учёба</span>
+              <ul>
+                <li><span class="it"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M1 3h6l2 2h10v12H1z" class="f-wall"/></svg>Информатика</span>
+                  <ul>
+                    <li><span class="it file"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M4 1h8l4 4v12H4z" class="f-card"/></svg>Доклад.docx</span></li>
+                    <li><span class="it file"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M4 1h8l4 4v12H4z" class="f-card"/></svg>Схема.bmp</span></li>
+                  </ul>
+                </li>
+                <li><span class="it"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M1 3h6l2 2h10v12H1z" class="f-wall"/></svg>Русский язык</span>
+                  <ul><li><span class="it file"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M4 1h8l4 4v12H4z" class="f-card"/></svg>Сочинение.txt</span></li></ul>
+                </li>
+              </ul>
+            </li>
+            <li><span class="it"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M1 3h6l2 2h10v12H1z" class="f-wall"/></svg>Музыка</span>
+              <ul><li><span class="it file"><svg class="ico" viewBox="0 0 20 18" aria-hidden="true"><path d="M4 1h8l4 4v12H4z" class="f-card"/></svg>Песня.mp3</span></li></ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </figure>
+    <p class="ex">Папки похожи на шкафы и полки в библиотеке: книга (файл) стоит на полке (в папке), полка — в шкафу (в другой папке). Так любой файл легко найти.</p>
+  </div>
+
+  <div class="def"><span class="bang">!</span><div><p><b>Путь к файлу</b> — имена всех каталогов от корневого до того, в котором непосредственно находится файл.</p><p>Последовательно записанные путь к файлу и имя файла составляют <b>полное имя файла</b>. Не может быть двух файлов, имеющих одинаковые полные имена.</p></div></div>
+  <figure>
+    <div class="fname sm" aria-label="Полное имя файла: путь к файлу и имя файла">
+      <div class="part nm"><code>C:\Учёба\Информатика\</code><small>путь к файлу</small></div>
+      <div class="part ext"><code>Доклад.docx</code><small>имя файла</small></div>
+    </div>
+    <figcaption>Вместе — <b>полное имя файла</b> документа из дерева папок выше. Чтобы найти файл, последовательно открывают все папки пути (или ищут по имени через значок с лупой).</figcaption>
+  </figure>
+
+  <p>С файлами чаще всего выполняют четыре действия — как с книгами в библиотеке:</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Действие с файлом</th><th>Как это выглядит в библиотеке</th></tr></thead>
+    <tbody>
+      <tr><td><b>Модификация</b> — открыть файл, внести изменения, сохранить под тем же именем</td><td>Отреставрировать книгу и поставить на место</td></tr>
+      <tr><td><b>Копирование</b> — скопировать файл и сохранить в другой папке</td><td>Сделать копию книги и поставить в другой шкаф</td></tr>
+      <tr><td><b>Удаление</b></td><td>Списать книгу из библиотеки</td></tr>
+      <tr><td><b>Перемещение</b></td><td>Переставить книгу в другой шкаф</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="def"><span class="bang">!</span><div><p>При работе с файлами не следует:</p>
+    <ul class="dots">
+      <li>удалять файл, точно не выяснив, обязательно ли это следует делать;</li>
+      <li>давать файлу имя, которое не поясняет его содержание;</li>
+      <li>сохранять файл в той папке, где его потом будет трудно найти;</li>
+      <li>удалять или перемещать файлы, находящиеся в папках прикладных программ, — это может привести к тому, что программы перестанут работать.</li>
+    </ul></div></div>
+
+  <h3>Представление данных в компьютере</h3>
+  <div class="def"><span class="bang">!</span><div><p><b>Двоичный код</b> — это способ представления чисел, слов, изображений, аудио, видео и мультимедийной информации с помощью двух знаков: 0 и 1.</p></div></div>
+  <div class="def"><span class="bang">!</span><div><p><b>Двоичный алфавит</b> — алфавит из двух знаков (символов) — 0 и 1.</p><p><b>Двоичное слово</b> — любая последовательность 0 и 1.</p></div></div>
+  <div class="tbl"><table>
+    <tbody>
+      <tr><th>Символов в слове</th><td class="n">1</td><td class="n">2</td><td class="n">3</td><td class="n">4</td><td class="n">5</td><td class="n">6</td><td class="n">7</td><td class="n">8</td></tr>
+      <tr><th>Разных слов</th><td class="n">2</td><td class="n">4</td><td class="n">8</td><td class="n">16</td><td class="n">32</td><td class="n">64</td><td class="n">128</td><td class="n">256</td></tr>
+    </tbody>
+  </table></div>
+  <p>Восьмисимвольными словами можно закодировать все символы, имеющиеся на клавиатуре. Соответствие символов и двоичных слов задаётся с помощью <b>кодовых таблиц</b>.</p>
+  <div class="math">
+    <span>Кодирование: найти символ в кодовой таблице → записать его двоичный код.</span>
+    <span>В = 11000010, И = 11001000, Н = 11001101, Т = 11010010 → ВИНТ</span>
+    <span>Декодирование: разбить код на группы по 8 символов и заменить каждую символом из таблицы.</span>
+  </div>
+
+  <p>Графические объекты в компьютере создаются и хранятся двумя способами — в виде растрового или векторного изображения.</p>
+  <div class="def"><span class="bang">!</span><div><p><b>Растровое изображение</b> — это изображение, которое запоминается как совокупность разноцветных точек (пикселей). Цвету каждого пикселя ставится в соответствие двоичное слово.</p></div></div>
+  <figure>
+    <div class="scroll"><svg id="pix" viewBox="0 0 400 212" role="img" aria-label="Чёрно-белый рисунок 8 на 8 пикселей и его двоичный код" style="min-width:300px;max-width:440px;margin:0 auto"></svg></div>
+    <figcaption>Белая клеточка — 0, чёрная — 1. Каждая строка рисунка — одно восьмисимвольное двоичное слово. Если в палитре 8 цветов, на пиксель нужно слово из 3 символов, если 256 цветов — из 8.</figcaption>
+  </figure>
+  <div class="def"><span class="bang">!</span><div><p><b>Векторное изображение</b> — это изображение, которое может быть «собрано» из отрезков, окружностей, дуг, прямоугольников и других геометрических фигур и запоминается как набор команд, необходимых для построения этих фигур на экране. Такое описание делается с помощью символов некоторого алфавита и с помощью кодовых таблиц преобразуется в двоичный код.</p></div></div>
+
+  <h3>Размер файла</h3>
+  <p>Память компьютера удобно представить как лист в клетку. В каждой «клетке» хранится только одно из двух значений: нуль или единица.</p>
+  <div class="def"><span class="bang">!</span><div><p>Каждая «клетка» памяти компьютера называется <b>битом</b>. Так, для хранения одного произвольного символа (буквы, цифры, знака препинания и пр.) может использоваться 8 битов. 8 битов составляют 1 <b>байт</b>.</p></div></div>
+  <p>Один двоичный символ — это один бит. <b>Бит — самая маленькая единица измерения информации.</b></p>
+
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 700 220" role="img" aria-label="Один байт из восьми битов; слово ИНФОРМАТИКА занимает 11 байтов" style="min-width:520px">
+      <text x="172" y="46" class="t-lg t-b" text-anchor="end">1 бит</text>
+      <line x1="176" y1="41" x2="196" y2="41" class="s-blue"/>
+      <rect x="196" y="20" width="38" height="40" class="f-blue"/>
+      <rect x="234" y="20" width="38" height="40" class="f-card"/><rect x="272" y="20" width="38" height="40" class="f-card"/><rect x="310" y="20" width="38" height="40" class="f-card"/>
+      <rect x="348" y="20" width="38" height="40" class="f-card"/><rect x="386" y="20" width="38" height="40" class="f-card"/><rect x="424" y="20" width="38" height="40" class="f-card"/><rect x="462" y="20" width="38" height="40" class="f-card"/>
+      <path d="M196 68 v6 h152 l4 6 l4 -6 h144 v-6" class="s-mut"/>
+      <text x="352" y="100" class="t-lg" text-anchor="middle">1 байт = 8 битов</text>
+      <g class="t-head" font-size="22" font-weight="700" text-anchor="middle">
+        <rect x="35" y="118" width="50" height="46" rx="6" class="f-card"/><text x="60" y="149">И</text>
+        <rect x="93" y="118" width="50" height="46" rx="6" class="f-card"/><text x="118" y="149">Н</text>
+        <rect x="151" y="118" width="50" height="46" rx="6" class="f-card"/><text x="176" y="149">Ф</text>
+        <rect x="209" y="118" width="50" height="46" rx="6" class="f-card"/><text x="234" y="149">О</text>
+        <rect x="267" y="118" width="50" height="46" rx="6" class="f-card"/><text x="292" y="149">Р</text>
+        <rect x="325" y="118" width="50" height="46" rx="6" class="f-card"/><text x="350" y="149">М</text>
+        <rect x="383" y="118" width="50" height="46" rx="6" class="f-card"/><text x="408" y="149">А</text>
+        <rect x="441" y="118" width="50" height="46" rx="6" class="f-card"/><text x="466" y="149">Т</text>
+        <rect x="499" y="118" width="50" height="46" rx="6" class="f-card"/><text x="524" y="149">И</text>
+        <rect x="557" y="118" width="50" height="46" rx="6" class="f-card"/><text x="582" y="149">К</text>
+        <rect x="615" y="118" width="50" height="46" rx="6" class="f-card"/><text x="640" y="149">А</text>
+      </g>
+      <path d="M35 172 v6 h311 l4 6 l4 -6 h311 v-6" class="s-mut"/>
+      <text x="350" y="206" class="t-lg" text-anchor="middle">11 символов × 8 битов = 88 битов = 11 байтов</text>
+    </svg></div>
+    <figcaption>Каждая буква — это 1 байт, то есть 8 «клеток»-битов.</figcaption>
+  </figure>
+
+  <p>Более крупные единицы — килобайт, мегабайт, гигабайт:</p>
+  <div class="chain" aria-label="Лестница единиц">
+    <span class="u">бит</span><span class="op">×8 →</span><span class="u">байт</span><span class="op">×1024 →</span><span class="u">Кбайт</span><span class="op">×1024 →</span><span class="u">Мбайт</span><span class="op">×1024 →</span><span class="u">Гбайт</span>
+  </div>
+  <div class="math">
+    <span>1 байт = 8 битов;</span>
+    <span>1 Кбайт (один килобайт) = 1024 байта;</span>
+    <span>1 Мбайт (один мегабайт) = 1024 Кбайт;</span>
+    <span>1 Гбайт (один гигабайт) = 1024 Мбайт.</span>
+  </div>
+  <p>Объём компьютерных информационных носителей измеряется в мегабайтах и гигабайтах.</p>
+
+  <p class="ex"><b>Задача из учебника.</b> Сколько словарей Ожегова поместится на лазерный диск 700 Мбайт?</p>
+  <div class="math">
+    <span>800 стр. · 2 колонки · 80 строк · 60 символов = 7&nbsp;680&nbsp;000 символов</span>
+    <span>7&nbsp;680&nbsp;000 символов = 7&nbsp;680&nbsp;000 байтов</span>
+    <span>7&nbsp;680&nbsp;000 : 1024 = 7500 Кбайт</span>
+    <span>7500 : 1024 ≈ 7 Мбайт</span>
+    <span>700 : 7 = 100 словарей на одном диске</span>
+  </div>
+
+  <h3>Объекты операционной системы</h3>
+  <div class="def"><span class="bang">!</span><div><p>Совокупность всех программ, предназначенных для выполнения на компьютере, называют <b>программным обеспечением</b> (ПО) компьютера.</p><p><b>Операционная система</b> — это комплекс программ, обеспечивающих совместное функционирование всех устройств компьютера и предоставляющих пользователю доступ к ресурсам компьютера.</p></div></div>
+  <ul class="dots">
+    <li>Объекты ОС: рабочий стол, панель задач, окна документов, папок, приложений.</li>
+    <li>Все объекты (программы, документы, папки, диски) изображаются на экране небольшими картинками — <b>значками</b>.</li>
+    <li><b>Контекстное меню</b> открывается щелчком <b>правой</b> кнопкой мыши. В нём — все действия с объектом. Последний пункт — <b>Свойства</b>: можно узнать свойства объекта и изменить некоторые из них.</li>
+    <li>Окно <i>Компьютер</i> (<i>Мой компьютер</i>) содержит значки всех устройств, на которых можно хранить файлы.</li>
+  </ul>
+  <div class="grid g2">
+    <div class="kcell"><h4>Значки файлов с данными</h4><p class="q">рисунок, документ Word</p></div>
+    <div class="kcell"><h4>Значки файлов-программ</h4><p class="q">Калькулятор, WordPad</p></div>
+    <div class="kcell"><h4>Значки папок</h4><p class="q">жёлтая папка</p></div>
+    <div class="kcell"><h4>Ярлыки</h4><p class="q">значок со стрелкой — быстрый доступ к папке, программе или документу</p></div>
+  </div>
+</section>
+
+<!-- ================= §3 ================= -->
+<section class="par" id="p3">
+  <header class="ph"><span class="pn">§3</span><h2>Отношения объектов и их множеств</h2></header>
+  <ul class="kw"><li>отношение</li><li>«является элементом множества»</li><li>«входит в состав»</li><li>схема отношения</li><li>схема состава</li><li>круги Эйлера</li></ul>
+
+  <h3>Разнообразие отношений</h3>
+  <p>Человек может рассказать не только о признаках объекта, но и об <b>отношениях</b>, в которых этот объект находится с другими объектами:</p>
+  <ul class="dots ex">
+    <li>«Иван — <i>сын</i> Андрея»; «Эверест <i>выше</i> Эльбруса»; «Винни-Пух <i>дружит</i> с Пятачком»;</li>
+    <li>«21 <i>кратно</i> 3»; «один байт <i>равен</i> восьми битам»; «текстовый процессор <i>входит в состав</i> программного обеспечения компьютера».</li>
+  </ul>
+  <p>Выделенное слово — <b>имя отношения</b>, оно обозначает характер связи между двумя объектами.</p>
+  <div class="def"><span class="bang">!</span><div><p><b>Отношение</b> — это взаимная связь, в которой находятся какие-либо объекты.</p></div></div>
+
+  <h3>Схема отношений</h3>
+  <ul class="dots">
+    <li>Связи между объектами рисуют <b>линиями</b> на схеме отношений. Объекты изображают кругами, овалами, точками, прямоугольниками.</li>
+    <li>Если имя отношения меняется, когда объекты меняются местами («выше» — «ниже», «приходится отцом» — «приходится сыном»), направление показывают <b>стрелкой</b>.</li>
+    <li>Стрелки можно не рисовать, если договориться о правиле: например, имена детей всегда ниже имени отца.</li>
+  </ul>
+  <figure>
+    <div class="scroll"><div data-tree="family" data-arrows="1" aria-label="Схема: Андрей — отец Петра, Ивана и Алексея; Алексей — отец Михаила и Ильи"></div></div>
+    <figcaption>Каждая стрелка идёт от отца к сыну и означает отношение «приходится отцом»: «Андрей приходится отцом Ивану».</figcaption>
+  </figure>
+
+  <p>Отношения могут связывать не только два объекта, но и объект с множеством объектов или два множества:</p>
+  <div class="grid">
+    <div class="kcell c-blue"><h4>объект ↔ объект</h4><p class="q">«Эверест выше Эльбруса»</p></div>
+    <div class="kcell c-green"><h4>объект ↔ множество</h4><p class="q">«является элементом множества»: «Гарри Поттер — литературный персонаж», «Москва — столичный город»</p></div>
+    <div class="kcell c-rose"><h4>множество ↔ множество</h4><p class="q">«файлы <i>группируются</i> в папки», «колёса <i>входят в состав</i> автомобилей», «бабочки — это насекомые»</p></div>
+  </div>
+
+  <h3>Отношения между множествами</h3>
+  <p>Графически множества удобно представлять с помощью кругов, которые называют <b>кругами Эйлера</b>.</p>
+
+  <div class="euler">
+    <figure>
+      <h4>Пересекаются</h4>
+      <svg viewBox="0 0 240 160" role="img" aria-label="Два пересекающихся круга A и B">
+        <rect x="6" y="6" width="228" height="148" rx="10" class="frame"/>
+        <circle cx="94" cy="80" r="54" class="sa"/><circle cx="148" cy="80" r="54" class="sb"/>
+        <text x="66" y="60" class="t-lg t-b">A</text><text x="164" y="60" class="t-lg t-g">B</text>
+        <text x="121" y="85" class="t-sm" text-anchor="middle" font-weight="700">общие</text>
+      </svg>
+      <div class="def"><div><p>Если множества <i>A</i> и <i>B</i> имеют общие элементы, т. е. элементы, принадлежащие одновременно <i>A</i> и <i>B</i>, то говорят, что эти множества <b>пересекаются</b>.</p></div></div>
+      <figcaption><i>A</i> — электронные письма, <i>B</i> — письма на русском языке. В пересечении — электронные письма на русском.</figcaption>
+    </figure>
+    <figure>
+      <h4>Не пересекаются</h4>
+      <svg viewBox="0 0 240 160" role="img" aria-label="Два отдельных круга A и B">
+        <rect x="6" y="6" width="228" height="148" rx="10" class="frame"/>
+        <circle cx="70" cy="80" r="46" class="sa"/><circle cx="170" cy="80" r="46" class="sb"/>
+        <text x="64" y="86" class="t-lg t-b">A</text><text x="164" y="86" class="t-lg t-g">B</text>
+      </svg>
+      <div class="def"><div><p>Если множества не имеют общих элементов, то говорят, что они <b>не пересекаются</b>.</p></div></div>
+      <figcaption><i>A</i> — печатные учебники, <i>B</i> — электронные учебники.</figcaption>
+    </figure>
+    <figure>
+      <h4>Подмножество</h4>
+      <svg viewBox="0 0 240 160" role="img" aria-label="Круг B внутри круга A">
+        <rect x="6" y="6" width="228" height="148" rx="10" class="frame"/>
+        <circle cx="120" cy="80" r="64" class="sb"/><circle cx="132" cy="96" r="32" class="sa"/>
+        <text x="88" y="46" class="t-lg t-g">A</text><text x="126" y="102" class="t-lg t-b">B</text>
+      </svg>
+      <div class="def"><div><p>Если каждый элемент множества <i>B</i> является элементом множества <i>A</i>, то говорят, что <i>B</i> — <b>подмножество</b> <i>A</i>.</p></div></div>
+      <figcaption><i>A</i> — ученики, <i>B</i> — шестиклассники.</figcaption>
+    </figure>
+    <figure>
+      <h4>Равны</h4>
+      <svg viewBox="0 0 240 160" role="img" aria-label="Круги A и B совпадают">
+        <rect x="6" y="6" width="228" height="148" rx="10" class="frame"/>
+        <circle cx="120" cy="80" r="56" class="sa"/><circle cx="120" cy="80" r="56" class="sb"/>
+        <text x="120" y="86" class="t-lg" text-anchor="middle">A = B</text>
+      </svg>
+      <div class="def"><div><p>Если каждый элемент множества <i>B</i> является элементом множества <i>A</i> и, наоборот, каждый элемент множества <i>A</i> является элементом множества <i>B</i>, то говорят, что множества <i>A</i> и <i>B</i> <b>равны</b>.</p></div></div>
+      <figcaption><i>A</i> — равносторонние прямоугольники, <i>B</i> — квадраты.</figcaption>
+    </figure>
+  </div>
+
+  <h3>Отношение «входит в состав»</h3>
+  <ul class="dots">
+    <li>В зависимости от ситуации объект может рассматриваться как единое целое либо «распадаться» на более мелкие объекты.</li>
+    <li>Объект может состоять из множества <b>одинаковых</b> (однородных, подобных) объектов — апельсин из долек, класс из учеников — или множества <b>различных</b> объектов — компьютер из системного блока, монитора, клавиатуры.</li>
+    <li>Описывая состав, объект мысленно «разбирают» на части: сначала крупные части, потом каждую — на части поменьше и т. д.</li>
+  </ul>
+  <div class="def"><span class="bang">!</span><div><p><b>Схема отношений «входит в состав» (схема состава)</b> отражает не только составные части, но и тот порядок, в котором предмет «разбирался» на части. Таким образом, она отражает строение (структуру) объекта. На схеме состава можно использовать линии без стрелок, если имя объекта-части располагать ниже имени объекта, которому принадлежит эта часть.</p></div></div>
+  <figure>
+    <div class="scroll"><div data-tree="house" aria-label="Схема состава дома"></div></div>
+    <figcaption>Все имена здесь общие: схема показывает состав не одного конкретного дома, а «дома вообще».</figcaption>
+  </figure>
+  <p class="ex">У сложного объекта можно назвать признаки и всего объекта, и его частей: весь дом можно строить, крышу — красить, стекло — вставлять.</p>
+</section>
+
+<!-- ================= §4 ================= -->
+<section class="par" id="p4">
+  <header class="ph"><span class="pn">§4</span><h2>Разновидности объектов и их классификация</h2></header>
+  <ul class="kw"><li>отношение «является разновидностью»</li><li>схема разновидностей</li><li>классификация</li></ul>
+
+  <h3>Отношение «является разновидностью»</h3>
+  <p>Из двух множеств, связанных отношением «является разновидностью», одно является подмножеством другого. Например, множество попугаев является подмножеством множества птиц, множество натуральных чисел является подмножеством множества целых чисел.</p>
+  <div class="def"><span class="bang">!</span><div><p>Схему отношения «является разновидностью» будем называть <b>схемой разновидностей</b>.</p><p>На схеме разновидностей имя подмножества всегда располагается ниже имени включающего его множества.</p></div></div>
+
+  <div class="side">
+    <figure>
+      <div class="scroll"><div data-tree="pets" aria-label="Схема разновидностей: домашнее животное — корова, собака, кошка; собака — ездовая собака"></div></div>
+      <figcaption><b>а)</b> схема разновидностей</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 240 200" role="img" aria-label="Вложенные круги: домашние животные, внутри собаки, внутри ездовые собаки" style="max-width:260px;margin:0 auto">
+        <circle cx="120" cy="100" r="90" class="sb"/>
+        <circle cx="120" cy="112" r="62" class="sa"/>
+        <circle cx="120" cy="130" r="34" class="sr"/>
+        <text x="120" y="30" class="t-md t-g" text-anchor="middle" font-weight="800">Домашние</text>
+        <text x="120" y="46" class="t-md t-g" text-anchor="middle" font-weight="800">животные</text>
+        <text x="120" y="76" class="t-md t-b" text-anchor="middle" font-weight="800">Собаки</text>
+        <text x="120" y="127" class="t-sm t-r" text-anchor="middle" font-weight="800">Ездовые</text>
+        <text x="120" y="142" class="t-sm t-r" text-anchor="middle" font-weight="800">собаки</text>
+      </svg>
+      <figcaption><b>б)</b> то же самое кругами Эйлера</figcaption>
+    </figure>
+  </div>
+
+  <p>Объекты подмножества обязательно обладают всеми признаками объектов множества (<b>наследуют признаки</b> множества) и кроме них имеют ещё свой, дополнительный признак (или несколько признаков).</p>
+  <p class="ex">Любое домашнее животное нужно кормить; собаки, кроме того, лают и кусаются; а ездовые собаки ещё и бегают в упряжке.</p>
+  <p>Зачем делить множества на подмножества? Человек одновременно может сосредоточиться лишь на <b>5–9 объектах</b>. Поэтому большое множество делят на части, каждую часть — ещё раз и т. д. Делят не как попало, а по признакам объектов.</p>
+
+  <h3>Классификация объектов</h3>
+  <div class="def"><span class="bang">!</span><div><p>Подмножество объектов, имеющих общие признаки, называется <b>классом</b>. Деление множества объектов на классы называется <b>классификацией</b>. Признаки, по которым один класс отличается от другого, называются <b>основанием классификации</b>.</p></div></div>
+  <div class="def"><span class="bang">!</span><div><p>Классификация называется <b>естественной</b>, если в качестве её основания взяты <b>существенные признаки</b> объектов.</p></div></div>
+  <p>Место, занимаемое объектом в естественной классификации, позволяет судить о его признаках.</p>
+  <p><b>Пример:</b> классификация живых существ Карла Линнея (1735 год). Сейчас все живые существа делят на пять царств: растения, грибы, животные, простейшие и прокариоты. Каждое царство делится на уровни:</p>
+  <ol class="ranks" aria-label="Уровни классификации на примере домашней кошки">
+    <li><b>царство</b><span>Животные</span></li>
+    <li><b>тип</b><span>Хордовые</span></li>
+    <li><b>класс</b><span>Млекопитающие</span></li>
+    <li><b>отряд</b><span>Хищные</span></li>
+    <li><b>семейство</b><span>Кошачьи</span></li>
+    <li><b>род</b><span>Кошки</span></li>
+    <li><b>вид</b><span>Домашняя кошка</span></li>
+  </ol>
+  <p class="ex">На уроках русского языка вы тоже пользуетесь естественной классификацией — частей речи (самостоятельные, служебные, междометие).</p>
+
+  <div class="def"><span class="bang">!</span><div><p>Классификация называется <b>искусственной</b>, если в качестве её основания взяты несущественные признаки объектов.</p></div></div>
+  <p>К искусственным относятся <b>вспомогательные классификации</b>: список фамилий по алфавиту, алфавитно-предметные указатели, именные каталоги в библиотеках. Вспомогательная классификация не позволяет судить о признаках объектов; она служит для более лёгкого поиска объектов.</p>
+
+  <div class="grid">
+    <div class="kcell c-green"><h4>Естественная</h4><p>основание — существенные признаки</p><p class="q">Пример: живые существа по Линнею. По месту в классификации можно узнать признаки объекта.</p></div>
+    <div class="kcell c-rose"><h4>Искусственная</h4><p>основание — несущественные признаки</p><p class="q">Пример: звёзды по созвездиям. Сами звёзды к этому делению отношения не имеют.</p></div>
+    <div class="kcell c-blue"><h4>Вспомогательная</h4><p>вид искусственной — для поиска</p><p class="q">Пример: фамилии по алфавиту, каталог в библиотеке.</p></div>
+  </div>
+
+  <h3>Классификация компьютерных объектов</h3>
+  <div class="grid g2">
+    <div class="kcell c-blue"><h4>Устройства</h4><p>процессор, оперативная память, жёсткий диск, съёмный диск</p></div>
+    <div class="kcell c-green"><h4>Файлы</h4><p>программы, документы</p></div>
+    <div class="kcell c-rose"><h4>Связи</h4><p>значки, ярлыки</p></div>
+    <div class="kcell c-amber"><h4>Контейнеры</h4><p>папки, окна, панели</p></div>
+  </div>
+
+  <h3>Вредоносные программы и их классификация</h3>
+  <div class="def"><span class="bang">!</span><div><p><b>Вредоносные программы</b> — это специально написанные злоумышленниками компьютерные программы, которые, проникнув обманным путём в компьютер, замедляют или блокируют его работу, похищают или удаляют данные пользователя и так далее.</p></div></div>
+  <div class="grid g3">
+    <div class="kcell c-rose"><h4>Вирусы</h4><p class="q">небольшие фрагменты программного кода, присоединяющие себя к другим файлам; портят данные пользователя и замедляют работу операционной системы</p></div>
+    <div class="kcell c-rose"><h4>Черви</h4><p class="q">самостоятельные программы, способные замедлять работу компьютера, удалять файлы и даже отключать определённые программы</p></div>
+    <div class="kcell c-rose"><h4>Троянские программы</h4><p class="q">прикидываются безопасными, но запускают свою вредоносную начинку после проникновения в компьютер</p></div>
+    <div class="kcell c-rose"><h4>Шпионские программы</h4><p class="q">без разрешения следят за системой (например, записывают нажатия клавиш, чтобы узнать пароли)</p></div>
+    <div class="kcell c-rose"><h4>Вымогатели</h4><p class="q">проникнув в компьютер, блокируют файлы и требуют за снятие блокировки выкуп</p></div>
+  </div>
+</section>
+
+<!-- ================= §5 ================= -->
+<section class="par" id="p5">
+  <header class="ph"><span class="pn">§5</span><h2>Системы объектов</h2></header>
+  <ul class="kw"><li>системный подход</li><li>система</li><li>структура</li><li>системный эффект</li><li>входы и выходы системы</li><li>«чёрный ящик»</li></ul>
+
+  <h3>Разнообразие систем</h3>
+  <p>Состояние сложного, составного объекта определяется не только значениями его собственных признаков, но и состояниями объектов-частей. <span class="ex">Автомобиль переходит в состояние торможения, когда нажата педаль тормоза.</span></p>
+  <div class="def"><span class="bang">!</span><div><p>Подход к описанию сложного объекта, при котором не просто называют его составные части, но и рассматривают их взаимодействие и взаимовлияние, принято называть <b>системным подходом</b>. При этом сложный объект называют <b>системой</b>, а его части — <b>компонентами</b> (элементами) системы.</p></div></div>
+  <div class="def"><span class="bang">!</span><div><p><b>Система</b> — это целое, состоящее из взаимосвязанных частей. Части, образующие систему, называются её компонентами.</p></div></div>
+  <p>Любой реальный объект достаточно сложен, поэтому его можно рассматривать как систему.</p>
+
+  <figure>
+    <div class="scroll"><div data-tree="systems" data-arrows="1" aria-label="Виды систем: материальные (природные, технические), нематериальные, смешанные"></div></div>
+    <figcaption>Технические системы создаются людьми. Смешанные системы содержат материальные и нематериальные компоненты. Среди них — <b>социальные системы</b>: их образуют люди, объединённые одним занятием, интересами, целями, местом проживания (оркестр, футбольный клуб, население города).</figcaption>
+  </figure>
+
+  <h3>Состав и структура системы</h3>
+  <p>Любая система определяется не только набором и признаками её элементов, но также взаимосвязями между элементами. Из одних и тех же элементов могут получиться разные системы:</p>
+  <ul class="dots ex">
+    <li>из одного конструктора ребёнок собирает разные сооружения;</li>
+    <li>из одних продуктов мама готовит щи или рагу;</li>
+    <li>алмаз и графит состоят из одного вещества — углерода. Но в алмазе молекулы образуют кристаллическую структуру (самое твёрдое вещество в природе), а в графите — слоистую (мягкий, из него делают грифели карандашей).</li>
+  </ul>
+  <div class="def"><span class="bang">!</span><div><p><b>Структура</b> — это порядок объединения элементов, составляющих систему.</p></div></div>
+
+  <p>Состав и структуру системы описывают с помощью схемы состава. В состав системы может входить другая система. Первую называют <b>надсистемой</b>, вторую — <b>подсистемой</b>. Имя надсистемы на схеме состава всегда располагают выше имён всех её подсистем.</p>
+  <figure>
+    <div class="scroll"><div data-tree="brain" aria-label="Схема состава нервной системы птицы"></div></div>
+    <figcaption>Один и тот же компонент может быть сразу и надсистемой, и подсистемой: <b>головной мозг</b> — подсистема нервной системы птицы и надсистема для переднего, среднего мозга и т. д. Это <b>многоуровневая структура</b>.</figcaption>
+  </figure>
+  <p class="ex">Иногда надсистему надо поискать: автомобили и дороги — части транспортной системы города; насекомые, птицы и деревья — компоненты системы «Парк» или «Лес».</p>
+
+  <h3>Системный эффект</h3>
+  <div class="def"><span class="bang">!</span><div><p>Главное свойство любой системы — возникновение <b>системного эффекта</b>. Заключается оно в том, что при объединении элементов в систему у системы появляются новые признаки, которыми не обладал ни один из элементов в отдельности.</p></div></div>
+  <div class="plane" aria-label="Части самолёта по отдельности не летают, а самолёт летает">
+    <span class="pc">крылья — <s>летают</s></span><span class="eq">+</span>
+    <span class="pc">фюзеляж — <s>летает</s></span><span class="eq">+</span>
+    <span class="pc">двигатели — <s>летают</s></span><span class="eq">=</span>
+    <span class="pc ok">самолёт летает!</span>
+  </div>
+  <p class="ex">А если убрать из самолёта одно крыло, летать не сможет весь самолёт.</p>
+
+  <h3>Система и окружающая среда</h3>
+  <p>Выделив систему, мы как бы проводим вокруг неё границу. Всё, что осталось снаружи, — <b>среда</b>. Среда влияет на систему, система — на среду: они <b>взаимодействуют</b>.</p>
+  <div class="def"><span class="bang">!</span><div><p>Воздействия среды на систему называют <b>входами системы</b>, а воздействия системы на среду — <b>выходами системы</b>.</p></div></div>
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 700 320" role="img" aria-label="Дерево как система: входы — свет, углекислый газ, вода, минеральные вещества; выходы — кислород, тень, древесина, побеги" style="min-width:540px">
+      <rect x="4" y="4" width="692" height="312" rx="14" class="s-dash"/>
+      <text x="22" y="30" class="t-up t-mut">СРЕДА</text>
+      <rect x="250" y="36" width="200" height="266" rx="18" class="sys"/>
+      <text x="350" y="60" class="t-up t-g" text-anchor="middle">СИСТЕМА «ДЕРЕВО»</text>
+      <polygon points="340,186 360,186 365,252 335,252" class="f-wood"/>
+      <path d="M350 250 L326 274 M350 250 L374 274 M350 250 L350 280" class="s-wood"/>
+      <circle cx="350" cy="122" r="46" class="f-leaf"/>
+      <circle cx="316" cy="146" r="34" class="f-leaf"/>
+      <circle cx="384" cy="146" r="34" class="f-leaf"/>
+      <circle cx="350" cy="164" r="34" class="f-leaf"/>
+      <line x1="262" y1="256" x2="438" y2="256" class="s-mut"/>
+      <!-- входы -->
+      <text x="196" y="82" class="t-up t-b" text-anchor="middle">ВХОДЫ</text>
+      <g class="t-md" text-anchor="end">
+        <text x="140" y="112">Солнечный свет</text>
+        <text x="140" y="162">Углекислый газ</text>
+        <text x="140" y="222">Вода</text>
+        <text x="140" y="258">Минеральные</text><text x="140" y="276">вещества</text>
+      </g>
+      <line x1="148" y1="107" x2="290" y2="107" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="148" y1="157" x2="276" y2="157" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="148" y1="217" x2="330" y2="262" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="148" y1="266" x2="322" y2="272" class="s-blue" marker-end="url(#ahb)"/>
+      <!-- выходы -->
+      <text x="504" y="82" class="t-up t-r" text-anchor="middle">ВЫХОДЫ</text>
+      <g class="t-md" text-anchor="start">
+        <text x="560" y="116">Кислород</text>
+        <text x="560" y="168">Тень от кроны</text>
+        <text x="560" y="222">Древесина</text>
+        <text x="560" y="270">Молодые побеги</text>
+      </g>
+      <line x1="396" y1="111" x2="552" y2="111" class="s-rose" marker-end="url(#ahr)"/>
+      <line x1="418" y1="163" x2="552" y2="163" class="s-rose" marker-end="url(#ahr)"/>
+      <line x1="365" y1="217" x2="552" y2="217" class="s-rose" marker-end="url(#ahr)"/>
+      <line x1="398" y1="265" x2="552" y2="265" class="s-rose" marker-end="url(#ahr)"/>
+    </svg></div>
+    <figcaption>Дерево как система. Входы — то, что среда даёт дереву; выходы — то, что дерево отдаёт среде. Для большинства реальных систем список входов и выходов бесконечен.</figcaption>
+  </figure>
+
+  <h3>Система как «чёрный ящик»</h3>
+  <p>Часто человек не знает, как система устроена «внутри». Ему важнее знать, к каким результатам на выходе приведут определённые воздействия на входе. Тогда говорят, что система рассматривается как <b>«чёрный ящик»</b>.</p>
+  <div class="def"><span class="bang">!</span><div><p>Представить некоторую систему в виде «чёрного ящика» — это значит указать её входы и выходы, а также зависимость между ними.</p></div></div>
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 700 180" role="img" aria-label="Чёрный ящик: на входе яблоки и кнопка, на выходе сок" style="min-width:460px">
+      <text x="200" y="30" class="t-up t-b" text-anchor="middle">ВХОД</text>
+      <text x="520" y="30" class="t-up t-r" text-anchor="middle">ВЫХОД</text>
+      <g class="t-lg" text-anchor="end"><text x="166" y="74">яблоки</text><text x="166" y="118">нажать «Пуск»</text></g>
+      <line x1="174" y1="69" x2="258" y2="69" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="174" y1="113" x2="258" y2="113" class="s-blue" marker-end="url(#ahb)"/>
+      <rect x="265" y="40" width="170" height="104" rx="14" class="f-box"/>
+      <text x="350" y="112" class="t-head t-onbox" font-size="56" text-anchor="middle">?</text>
+      <line x1="442" y1="92" x2="530" y2="92" class="s-rose" marker-end="url(#ahr)"/>
+      <text x="540" y="98" class="t-lg">яблочный сок</text>
+      <text x="350" y="170" class="t-md t-mut" text-anchor="middle">что происходит внутри — не важно</text>
+    </svg></div>
+    <figcaption>Так устроены инструкции к бытовой технике: в них написано, что сделать на входе (включить, нажать, повернуть), чтобы получить результат на выходе (выстиранное бельё, сок, ответ калькулятора). Что происходит «внутри», не объясняется.</figcaption>
+  </figure>
+</section>
+
+<!-- ================= §6 ================= -->
+<section class="par" id="p6">
+  <header class="ph"><span class="pn">§6</span><h2>Персональный компьютер как система</h2></header>
+  <ul class="kw"><li>интерфейс</li><li>пользовательский интерфейс</li></ul>
+
+  <h3>Компьютер как надсистема и подсистема</h3>
+  <p>Одним из объектов, рассматриваемых на уроках информатики, является персональный компьютер. Его можно рассматривать как систему, состоящую из подсистем «аппаратное обеспечение», «программное обеспечение», «информационные ресурсы».</p>
+
+  <figure>
+    <div class="pc" aria-label="Состав персонального компьютера">
+      <div class="pc-title">Персональный компьютер</div>
+      <div class="pc-cols">
+        <div class="pc-col c-blue"><h4>Аппаратное обеспечение</h4>
+          <span>Устройства ввода<small>клавиатура, мышь, сканер, микрофон</small></span><span>Устройства обработки<small>процессор</small></span><span>Устройства хранения<small>память, диски</small></span><span>Устройства вывода<small>монитор, принтер, колонки</small></span></div>
+        <div class="pc-col c-green"><h4>Информационные ресурсы</h4>
+          <span>Текстовые файлы</span><span>Графические файлы</span><span>Звуковые файлы</span><span>Файлы с видео­информацией</span></div>
+        <div class="pc-col c-rose"><h4>Программное обеспечение</h4>
+          <div class="pc-os"><b>Операционная система</b><span>Системные программы</span><span>Служебные программы</span></div>
+          <span>Прикладные программы</span></div>
+      </div>
+    </div>
+    <figcaption>Каждая подсистема сама является системой: она — надсистема для своих частей.</figcaption>
+  </figure>
+  <ul class="dots">
+    <li>Подсистема аппаратного обеспечения выступает в качестве надсистемы для устройств ввода, обработки, хранения и вывода информации.</li>
+    <li>Операционная система — подсистема программного обеспечения и надсистема, в состав которой входят системные и служебные программы.</li>
+    <li>Система информационных ресурсов включает в себя системы текстовых и графических файлов, звуковых файлов, файлов с видеоинформацией и т. д.</li>
+    <li>Персональный компьютер является частью (подсистемой) системы <b>«человек — компьютер»</b>.</li>
+  </ul>
+
+  <h3>Пользовательский интерфейс</h3>
+  <div class="def"><span class="bang">!</span><div><p>Средства, обеспечивающие взаимосвязь между элементами системы, называют <b>интерфейсом</b>.</p></div></div>
+  <p>Различают аппаратный, программный, аппаратно-программный и пользовательский интерфейсы.</p>
+  <div class="grid">
+    <div class="def"><div><p><b>Аппаратный интерфейс</b> — средства взаимодействия между устройствами компьютера; обеспечивается производителями оборудования.</p></div></div>
+    <div class="def"><div><p><b>Программный интерфейс</b> — средства взаимодействия (совместимости) программ между собой, а также программного обеспечения и информационных ресурсов; обеспечивается разработчиками программного обеспечения.</p></div></div>
+    <div class="def"><div><p><b>Аппаратно-программный интерфейс</b> — средства взаимодействия аппаратного и программного обеспечения компьютера.</p></div></div>
+  </div>
+  <p>Аппаратно-программный и пользовательский интерфейсы обеспечиваются <b>операционной системой</b> компьютера.</p>
+  <div class="def"><span class="bang">!</span><div><p><b>Пользовательский интерфейс</b> — средства взаимодействия человека и компьютера.</p></div></div>
+
+  <figure>
+    <div class="scroll"><svg viewBox="0 0 680 150" role="img" aria-label="Система человек — компьютер: связь через пользовательский интерфейс" style="min-width:460px">
+      <rect x="6" y="6" width="668" height="138" rx="14" class="s-dash"/>
+      <text x="24" y="30" class="t-up t-mut">СИСТЕМА «ЧЕЛОВЕК — КОМПЬЮТЕР»</text>
+      <rect x="30" y="50" width="150" height="70" rx="12" class="sr"/>
+      <text x="105" y="91" class="t-lg" text-anchor="middle">Человек</text>
+      <rect x="500" y="50" width="150" height="70" rx="12" class="sa"/>
+      <text x="575" y="91" class="t-lg" text-anchor="middle">Компьютер</text>
+      <rect x="250" y="56" width="180" height="58" rx="10" class="f-card"/>
+      <text x="340" y="81" class="t-md" text-anchor="middle" font-weight="800">пользовательский</text>
+      <text x="340" y="99" class="t-md" text-anchor="middle" font-weight="800">интерфейс</text>
+      <line x1="186" y1="76" x2="244" y2="76" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="244" y1="96" x2="186" y2="96" class="s-rose" marker-end="url(#ahr)"/>
+      <line x1="436" y1="76" x2="494" y2="76" class="s-blue" marker-end="url(#ahb)"/>
+      <line x1="494" y1="96" x2="436" y2="96" class="s-rose" marker-end="url(#ahr)"/>
+    </svg></div>
+    <figcaption>Человек даёт команды компьютеру и получает от него ответ через пользовательский интерфейс: меню, значки, окна.</figcaption>
+  </figure>
+
+  <div class="grid">
+    <div class="kcell c-blue"><h4>Интерфейс на основе меню</h4><p class="q">Команду выбирают из меню (списка команд).</p></div>
+    <div class="kcell c-green"><h4>Графический интерфейс</h4><p class="q">Объекты показаны значками, нужный значок выбирают мышью. Есть подсказки и меню.</p></div>
+    <div class="kcell c-rose"><h4>Трёхмерный интерфейс</h4><p class="q">Можно «ходить» по трёхмерному пространству, например по виртуальному музею. Имитирует реальный мир.</p></div>
+  </div>
+</section>
+
+<p class="foot">Конспект по учебнику информатики для 6 класса, §1–§6.</p>
+</main>
+
+<script>
+(function(){
+  var TREES = {
+    computers: {t:'Компьютеры', c:[{t:'Встраиваемые'},{t:'Персональные', c:[{t:'Стационарные', note:'с раздельной схемой,\nмоноблоки'},{t:'Мобильные', note:'ноутбуки,\nпланшеты'}]},{t:'Суперкомпьютеры'}]},
+    family: {t:'Андрей', c:[{t:'Пётр'},{t:'Иван'},{t:'Алексей', c:[{t:'Михаил'},{t:'Илья'}]}]},
+    house: {t:'Дом', c:[
+      {t:'Стена', c:[{t:'Окно', c:[{t:'Рама'},{t:'Стекло'}]},{t:'Дверь', c:[{t:'Полотно'},{t:'Петля'},{t:'Замок'}]}]},
+      {t:'Крыша'},{t:'Фундамент'}]},
+    pets: {t:'Домашнее животное', c:[{t:'Корова'},{t:'Собака', c:[{t:'Ездовая собака'}]},{t:'Кошка'}]},
+    systems: {t:'Системы', c:[
+      {t:'Материальные', c:[{t:'Природные', note:'Солнечная система,\nрастение, организм'},{t:'Технические', note:'автомобиль, компьютер,\nсистема вентиляции'}]},
+      {t:'Нематериальные', note:'разговорный язык,\nматематический язык,\nнотные записи'},
+      {t:'Смешанные', note:'оркестр,\nфутбольный клуб'}]},
+    brain: {t:'Нервная система птицы', c:[
+      {t:'Головной мозг', c:[{t:'Передний\nмозг', c:[{t:'Большие\nполушария'}]},{t:'Промежуточный\nмозг'},{t:'Средний\nмозг'},{t:'Продолговатый\nмозг'},{t:'Мозжечок'}]},
+      {t:'Спинной мозг'}]}
+  };
+  var NS = 'http://www.w3.org/2000/svg';
+  var cv = document.createElement('canvas').getContext('2d');
+  var FAM = 'Nunito, "Segoe UI", system-ui, sans-serif';
+  var LH = 19, NLH = 16, GAP = 16, PAD = 10;
+  function mw(s, size, wt){ cv.font = wt + ' ' + size + 'px ' + FAM; return cv.measureText(s).width; }
+  function prep(n){
+    n.lines = n.t.split('\n'); n.notes = n.note ? n.note.split('\n') : [];
+    n.w = Math.max.apply(null, n.lines.map(function(l){ return mw(l, 15, 700); })) + 30;
+    n.nw = n.notes.length ? Math.max.apply(null, n.notes.map(function(l){ return mw(l, 13, 400); })) + 8 : 0;
+    n.h = n.lines.length * LH + 17;
+    var k = n.c || []; k.forEach(prep);
+    var kw = k.reduce(function(s, c){ return s + c.sw; }, 0) + GAP * Math.max(0, k.length - 1);
+    n.sw = Math.max(n.w, n.nw, kw);
+    n.kw = kw;
+  }
+  function stats(n, d, s){
+    s.maxH = Math.max(s.maxH, n.h); s.depth = Math.max(s.depth, d); s.notes = Math.max(s.notes, n.notes.length);
+    (n.c || []).forEach(function(c){ stats(c, d + 1, s); }); return s;
+  }
+  function place(n, x0, d){
+    n.d = d; var k = n.c || [];
+    if (k.length){
+      var x = x0 + (n.sw - n.kw) / 2;
+      k.forEach(function(c){ place(c, x, d + 1); x += c.sw + GAP; });
+      n.cx = (k[0].cx + k[k.length - 1].cx) / 2;
+    } else n.cx = x0 + n.sw / 2;
+  }
+  function el(tag, attrs, parent){
+    var e = document.createElementNS(NS, tag);
+    for (var a in attrs) e.setAttribute(a, attrs[a]);
+    if (parent) parent.appendChild(e); return e;
+  }
+  function render(host){
+    var data = JSON.parse(JSON.stringify(TREES[host.getAttribute('data-tree')]));
+    var arrows = host.hasAttribute('data-arrows');
+    prep(data);
+    var s = stats(data, 0, {maxH:0, depth:0, notes:0});
+    var ROW = s.maxH + 46 + s.notes * NLH;
+    place(data, PAD, 0);
+    var W = data.sw + PAD * 2, maxB = 0;
+    var svg = el('svg', {viewBox:'0 0 ' + W + ' 10', role:'img'});
+    if (host.getAttribute('aria-label')) svg.setAttribute('aria-label', host.getAttribute('aria-label'));
+    var gl = el('g', {}, svg), gb = el('g', {}, svg);
+    function y(d){ return PAD + d * ROW; }
+    (function walk(n){
+      var top = y(n.d), k = n.c || [];
+      el('rect', {x:n.cx - n.w / 2, y:top, width:n.w, height:n.h, rx:9, 'class':'nb' + (n.d === 0 ? ' root' : '')}, gb);
+      var off = top + (n.h - n.lines.length * LH) / 2 + 14.5;
+      n.lines.forEach(function(l, i){ var t = el('text', {x:n.cx, y:off + i * LH, 'class':'tt'}, gb); t.textContent = l; });
+      n.notes.forEach(function(l, i){ var t = el('text', {x:n.cx, y:top + n.h + 17 + i * NLH, 'class':'tn'}, gb); t.textContent = l; });
+      maxB = Math.max(maxB, top + n.h + (n.notes.length ? 8 + n.notes.length * NLH : 0));
+      if (k.length){
+        var mid = (top + s.maxH + y(n.d + 1)) / 2;
+        var xs = k.map(function(c){ return c.cx; }).concat([n.cx]);
+        el('path', {d:'M' + n.cx + ' ' + (top + n.h) + 'V' + mid + 'M' + Math.min.apply(null, xs) + ' ' + mid + 'H' + Math.max.apply(null, xs), 'class':'tl'}, gl);
+        k.forEach(function(c){
+          var p = el('path', {d:'M' + c.cx + ' ' + mid + 'V' + (y(c.d) - (arrows ? 1 : 0)), 'class':'tl'}, gl);
+          if (arrows) p.setAttribute('marker-end', 'url(#ah)');
+          walk(c);
+        });
+      }
+    })(data);
+    var H = Math.ceil(maxB + PAD);
+    svg.setAttribute('viewBox', '0 0 ' + Math.ceil(W) + ' ' + H);
+    svg.style.width = '100%';
+    svg.style.maxWidth = Math.ceil(W) + 'px';
+    svg.style.minWidth = Math.round(Math.min(W, 900) * 0.62) + 'px';
+    svg.style.margin = '0 auto';
+    host.innerHTML = ''; host.appendChild(svg);
+  }
+  function renderAll(){ document.querySelectorAll('[data-tree]').forEach(render); }
+  renderAll();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderAll);
+
+  // raster picture 8x8 and its binary code
+  var pix = document.getElementById('pix');
+  if (pix){
+    var rows = ['10000001','01011010','00100100','01011010','01011010','00100100','01011010','10000001'];
+    var C = 24, X0 = 10, Y0 = 10;
+    rows.forEach(function(r, i){
+      for (var j = 0; j < 8; j++) el('rect', {x:X0 + j*C, y:Y0 + i*C, width:C, height:C, 'class': r[j] === '1' ? 'px1' : 'px0'}, pix);
+      var t = el('text', {x:256, y:Y0 + i*C + 17, 'class':'t-mono'}, pix); t.textContent = r.slice(0,4) + ' ' + r.slice(4);
+    });
+    el('path', {d:'M212 106 H246', 'class':'s-mut', 'marker-end':'url(#ah)'}, pix);
+  }
+})();
+</script>
+
+<script src="js/common.js?v=20261115b"></script>
+<script src="js/analytics.js?v=20261115b"></script>
+<script>
+  document.getElementById('memo-print').addEventListener('click', function () { window.print(); });
+</script>
+</body>
+</html>
