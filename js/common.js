@@ -236,6 +236,7 @@
     var regularTotal = questions.filter(function (x) { return !x.bonus; }).length;
     var bonusQ = questions.filter(function (x) { return x.bonus; })[0] || null;
     var bonusSolved = false;
+    var bonusTooFastMessage = '';
     var introShown = false;
 
     function showBonusIntro() {
@@ -255,6 +256,7 @@
       c.textContent = '';
       App.modeHeader(c, opts.title);
       var answered = false;
+      var shownAt;
       var optBox = el('div', { class: 'options' });
       var nextBtn = App.btn(idx === total - 1 ? 'Результат' : 'Далее', 'primary', function () {
         idx++;
@@ -268,24 +270,35 @@
         b.addEventListener('click', function () {
           if (answered) return;
           answered = true;
-          buttons.forEach(function (bb, i) {
+          var elapsedMs = performance.now() - shownAt;
+          buttons.forEach(function (bb) {
             bb.classList.add('locked');
-            if (q.options[i].correct) bb.classList.add('correct');
           });
-          if (o.correct) { if (q.bonus) bonusSolved = true; else score++; }
-          else {
-            b.classList.add('wrong');
-            mistakes.push({
-              prompt: q.prompt,
-              chosen: o.review || o.text,
-              correct: (q.options.filter(function (x) { return x.correct; })[0]).review ||
-                       (q.options.filter(function (x) { return x.correct; })[0]).text,
-              explain: q.explain,
-              bonus: !!q.bonus
+          if (q.bonus && elapsedMs < 20000) {
+            var seconds = (Math.floor(elapsedMs / 100) / 10).toFixed(1).replace('.', ',');
+            bonusTooFastMessage = 'С момента показа задачи прошло ' + seconds + ' с. ' +
+              'Вряд ли за такое время можно честно решить эту задачу. ' +
+              'Ответ не засчитан, бонусные баллы не начислены.';
+            card.appendChild(el('p', { class: 'bonus-result', role: 'status', text: bonusTooFastMessage }));
+          } else {
+            buttons.forEach(function (bb, i) {
+              if (q.options[i].correct) bb.classList.add('correct');
             });
+            if (o.correct) { if (q.bonus) bonusSolved = true; else score++; }
+            else {
+              b.classList.add('wrong');
+              mistakes.push({
+                prompt: q.prompt,
+                chosen: o.review || o.text,
+                correct: (q.options.filter(function (x) { return x.correct; })[0]).review ||
+                         (q.options.filter(function (x) { return x.correct; })[0]).text,
+                explain: q.explain,
+                bonus: !!q.bonus
+              });
+            }
+            if (q.onAnswer) q.onAnswer(o, !!o.correct);
+            if (q.explain) card.insertBefore(q.explain(), null);
           }
-          if (q.onAnswer) q.onAnswer(o, !!o.correct);
-          if (q.explain) card.insertBefore(q.explain(), null);
           nextBtn.hidden = false;
           try { nextBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
         });
@@ -311,6 +324,8 @@
       ]);
       c.appendChild(card);
       if (!custom) c.appendChild(App.bar([nextBtn]));
+      // Отсчёт начинается после показа условия, а не на экране приглашения к бонусу.
+      shownAt = performance.now();
     }
 
     function showResult() {
@@ -319,12 +334,13 @@
       var final = bonusQ ? score + (bonusSolved ? bonusQ.bonus.points : 0) : score;
       var head = App.renderResultHeader(c, final, regularTotal, bonusQ ? 'Баллов:' : undefined);
       if (bonusQ) {
-        c.appendChild(el('div', { class: 'bonus-result', text: bonusSolved
+        c.appendChild(el('div', { class: 'bonus-result', text: bonusTooFastMessage || (bonusSolved
           ? '\u2605 Бонусная задача решена: +' + bonusQ.bonus.points + ' балла'
-          : '\u2605 Бонусная задача не решена — баллы не сняты' }));
+          : '\u2605 Бонусная задача не решена — баллы не сняты') }));
       }
       if (!mistakes.length) {
-        c.appendChild(el('div', { class: 'card note-ok', text: 'Ошибок нет — отличный результат!' }));
+        c.appendChild(el('div', { class: 'card note-ok', text: bonusTooFastMessage
+          ? 'В основных заданиях ошибок нет.' : 'Ошибок нет — отличный результат!' }));
       } else {
         c.appendChild(el('h3', { class: 'section-title', text: 'Ошибки (' + mistakes.length + ')' }));
         mistakes.forEach(function (m) {
