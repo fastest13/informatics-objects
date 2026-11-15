@@ -108,12 +108,12 @@ main.wrap { padding-bottom: 32px; }
 }
 .menu-cards {
   position: relative; z-index: 1;
-  width: 46%;
-  display: grid; grid-template-columns: 1fr; gap: 12px;
+  width: 58%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
 }
 .menu-card {
   position: relative;
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 12px;
+  display: flex; flex-direction: column;
   padding: 0;
   text-decoration: none;
   text-align: left;
@@ -140,13 +140,11 @@ main.wrap { padding-bottom: 32px; }
   white-space: nowrap;
 }
 .menu-btns { font: 700 12px/1 system-ui, sans-serif; letter-spacing: .1em; }
-.menu-bar { grid-column: 1 / -1; }
-.menu-card .menu-title { grid-column: 1; padding: 12px 0 0 18px; }
-.menu-card .menu-desc { grid-column: 1; padding: 4px 0 14px 18px; }
+.menu-card .menu-title { padding: 10px 16px 0; font-size: 1.05rem; }
+.menu-card .menu-desc { padding: 4px 16px 10px; font-size: .9rem; }
 .menu-go {
-  grid-column: 2; grid-row: 2 / 4;
-  align-self: center;
-  margin: 0 18px 0 0;
+  align-self: flex-start;
+  margin: auto 16px 14px;
   padding: 5px 14px;
   border: 1.5px solid var(--accent);
   border-radius: 4px;
@@ -155,6 +153,13 @@ main.wrap { padding-bottom: 32px; }
   color: var(--accent);
   font: 600 13px/1.2 system-ui, sans-serif;
 }
+.menu-note { padding: 10px 16px 0; font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: #1f6b47; }
+.menu-note + .menu-title { padding-top: 4px; }
+.menu-card.is-doc { border-color: #1f6b47; }
+.menu-card.is-doc .menu-title { color: #1f6b47; }
+.menu-card.is-doc .menu-bar { background: linear-gradient(#2e8a5f, #1f6b47); color: #fff; }
+.menu-card.is-doc .menu-go { background: #e3f3ea; border-color: #1f6b47; color: #1f6b47; box-shadow: inset -2px -2px 0 rgba(31, 107, 71, .25); }
+.menu-card.is-doc:hover .menu-go { background: #fff; }
 .menu-card:hover .menu-go { background: #fff; }
 .menu-card:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 2px 6px rgba(30,40,60,.14), 0 8px 20px rgba(30,40,60,.10); }
 .menu-title { font-size: 1.15rem; font-weight: 700; color: var(--accent); }
@@ -291,6 +296,11 @@ main.wrap { padding-bottom: 32px; }
 .cell.bad, .match-grid.locked .cell.bad:hover { border-color: var(--red); background: var(--red-bg); }
 .fix { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--green); color: var(--green); font-weight: 600; }
 
+/* ---------- Разбор задачи ---------- */
+.explain { margin-top: 14px; padding: 12px 14px; background: var(--accent-soft); border-left: 4px solid var(--accent); border-radius: 8px; }
+.explain-why { margin: 0 0 8px; }
+.explain svg { display: block; margin: 8px auto 0; }
+
 /* ---------- Мобильные ---------- */
 @media (max-width: 640px) {
   body { font-size: 16px; }
@@ -305,10 +315,10 @@ main.wrap { padding-bottom: 32px; }
   .hero { position: relative; inset: auto; height: 78vw; }
   .hero img { width: 100%; height: 100%; object-fit: cover; object-position: 0% 35%; }
   .menu-cards { width: 100%; grid-template-columns: 1fr; gap: 10px; padding: 0 12px 12px; margin-top: -36px; }
-  .menu-card { grid-template-columns: minmax(0, 1fr); }
   .menu-card .menu-title { padding: 14px 16px 0; }
+  .menu-card .menu-note + .menu-title { padding-top: 4px; }
   .menu-card .menu-desc { padding: 6px 16px 10px; }
-  .menu-go { grid-column: 1; grid-row: auto; justify-self: start; margin: 0 16px 14px; }
+  .menu-go { margin: 0 16px 14px; }
   .prompt-term { font-size: 1.4rem; }
   .card { padding: 16px; }
   .result { gap: 12px; padding: 14px; }

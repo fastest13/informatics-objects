@@ -221,7 +221,7 @@
 
   // ---------- Общий движок викторины (режим «Выбери определение») ----------
   // opts: { container, title, questions, restart }
-  // question: { prompt, promptClass, options: [{ text, review, correct }], media?: () => Node, mountOptions?: (optBox, nextBtn) => boolean, onAnswer?: (option, correct) => void }
+  // question: { explain?: () => Node, prompt, promptClass, options: [{ text, review, correct }], media?: () => Node, mountOptions?: (optBox, nextBtn) => boolean, onAnswer?: (option, correct) => void }
   App.runQuiz = function (opts) {
     var c = opts.container, el = App.el;
     var questions = opts.questions, total = questions.length;
@@ -256,10 +256,12 @@
               prompt: q.prompt,
               chosen: o.review || o.text,
               correct: (q.options.filter(function (x) { return x.correct; })[0]).review ||
-                       (q.options.filter(function (x) { return x.correct; })[0]).text
+                       (q.options.filter(function (x) { return x.correct; })[0]).text,
+              explain: q.explain
             });
           }
           if (q.onAnswer) q.onAnswer(o, !!o.correct);
+          if (q.explain) card.insertBefore(q.explain(), null);
           nextBtn.hidden = false;
           try { nextBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {}
         });
@@ -270,7 +272,7 @@
       var mediaNode = q.media ? q.media() : null;
       // q.mountOptions(optBox, nextBtn) → true, если режим сам разместил варианты и кнопку (тогда нижняя панель не нужна)
       var custom = q.mountOptions ? !!q.mountOptions(optBox, nextBtn) : false;
-      c.appendChild(el('div', { class: 'card quiz-card' }, [
+      var card = el('div', { class: 'card quiz-card' }, [
         el('div', { class: 'progress-line' }, [
           el('span', { text: 'Вопрос ' + (idx + 1) + ' из ' + total }),
           el('span', { class: 'progress-score', text: 'Верно: ' + score })
@@ -281,7 +283,8 @@
         el('div', { class: 'prompt ' + (q.promptClass || ''), text: q.prompt }),
         mediaNode,
         custom ? null : optBox
-      ]));
+      ]);
+      c.appendChild(card);
       if (!custom) c.appendChild(App.bar([nextBtn]));
     }
 
@@ -297,7 +300,8 @@
           c.appendChild(el('div', { class: 'card mistake' }, [
             el('div', { class: 'mistake-prompt', text: m.prompt }),
             el('div', { class: 'answer wrong-text', text: 'Ваш ответ: ' + m.chosen }),
-            el('div', { class: 'answer right-text', text: 'Правильно: ' + m.correct })
+            el('div', { class: 'answer right-text', text: 'Правильно: ' + m.correct }),
+            m.explain ? m.explain() : null
           ]));
         });
       }
