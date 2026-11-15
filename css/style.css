@@ -302,9 +302,6 @@ main.wrap { padding-bottom: 32px; }
 .explain svg { display: block; margin: 8px auto 0; }
 
 /* ---------- Бонусная задача ---------- */
-.bonus-intro { text-align: center; padding: 24px 18px; border: 2px solid #e0b100; border-top-width: 6px; background: #fff8dc; }
-.bonus-intro h3 { margin: 0 0 10px; font-size: 1.4rem; color: #8a6d00; }
-.bonus-intro p { margin: 0 0 18px; }
 .bonus-tag { display: inline-block; margin-bottom: 10px; padding: 3px 12px; border-radius: 999px; background: #fdf0a8; border: 1px solid #e0b100; color: #5c4700; font-size: .85rem; font-weight: 700; }
 .bonus-result { margin: 0 0 14px; padding: 10px 14px; border-radius: 8px; border-left: 4px solid #e0b100; background: #fff8dc; color: #5c4700; font-weight: 600; }
 .bonus-note { margin-bottom: 6px; font-size: .85rem; color: #8a6d00; font-weight: 600; }

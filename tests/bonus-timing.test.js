@@ -72,14 +72,13 @@ function quiz() {
 }
 
 for (const answer of ['Bonus correct', 'Bonus wrong']) {
-  for (const elapsed of [0, 12500, 19999]) {
+  for (const elapsed of [0, 12500, 20000, 29999]) {
     test(`early ${answer} at ${elapsed} ms stays ungraded and hidden through results`, () => {
       const q = quiz();
       q.click('Regular correct');
-      q.click('Далее');
-      // Time spent reading the introduction does not count toward solving the task.
+      // Time spent on regular questions does not count toward solving the bonus.
       q.setTime(60000);
-      q.click('Решать');
+      q.click('Далее');
       q.setTime(60000 + elapsed);
       q.click(answer);
       const seconds = (Math.floor(elapsed / 100) / 10).toFixed(1).replace('.', ',');
@@ -102,13 +101,12 @@ for (const answer of ['Bonus correct', 'Bonus wrong']) {
   }
 }
 
-for (const elapsed of [20000, 25000]) {
+for (const elapsed of [30000, 35000]) {
   for (const correct of [true, false]) {
     test(`${correct ? 'correct' : 'wrong'} bonus at ${elapsed} ms is graded normally`, () => {
       const q = quiz();
       q.click('Regular correct');
       q.click('Далее');
-      q.click('Решать');
       q.setTime(elapsed);
       q.click(correct ? 'Bonus correct' : 'Bonus wrong');
       assert.equal(q.bonusExplanations, 1);
@@ -128,10 +126,44 @@ test('regular responses remain graded immediately', () => {
   q.click('Regular wrong');
   assert(descendants(q.container).some(node => node.classes.has('wrong')));
   q.click('Далее');
-  q.click('Решать');
-  q.setTime(20000);
+  q.setTime(30000);
   q.click('Bonus correct');
   q.click('Результат');
   assert.deepEqual(q.result, { score: 2, total: 1 });
   assert(q.container.textContent.includes('Правильно: Regular correct'));
 });
+
+test('bonus condition, options and warning appear together without a start screen', () => {
+  const q = quiz();
+  assert(!q.container.textContent.includes('30 секунд'));
+  q.click('Regular correct');
+  q.click('Далее');
+  const card = descendants(q.container).find(node => node.classes.has('quiz-card'));
+  assert(card.textContent.includes('Bonus'));
+  assert(card.textContent.includes('Эта задача сложнее обычных.'));
+  assert(card.textContent.includes('30 секунд'));
+  assert(card.textContent.includes('Bonus correct'));
+  assert(!descendants(q.container).some(node => node.tag === 'button' && node.text === 'Решать'));
+});
+
+for (const outcome of ['early', 'correct', 'wrong']) {
+  test(`bonus ${outcome} message follows the full error review`, () => {
+    const q = quiz();
+    q.click('Regular wrong');
+    q.click('Далее');
+    q.setTime(outcome === 'early' ? 13700 : 30000);
+    q.click(outcome === 'wrong' ? 'Bonus wrong' : 'Bonus correct');
+    q.click('Результат');
+    const children = q.container.children;
+    const bonusIndex = children.findIndex(node => node.classes.has('bonus-result'));
+    const mistakeIndices = children.map((node, index) => node.classes.has('mistake') ? index : -1).filter(index => index >= 0);
+    assert(mistakeIndices.length > 0);
+    assert(mistakeIndices.every(index => index < bonusIndex));
+    assert.equal(bonusIndex, children.length - 2);
+    assert(children[bonusIndex].textContent.includes('Бонусная задача'));
+    if (outcome === 'early') {
+      assert(children[bonusIndex].textContent.includes('прошло 13,7 с.'));
+      assert(!q.container.textContent.includes('Правильно: Bonus'));
+    }
+  });
+}

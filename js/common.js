@@ -237,22 +237,9 @@
     var bonusQ = questions.filter(function (x) { return x.bonus; })[0] || null;
     var bonusSolved = false;
     var bonusTooFastMessage = '';
-    var introShown = false;
-
-    function showBonusIntro() {
-      introShown = true;
-      c.textContent = '';
-      App.modeHeader(c, opts.title);
-      c.appendChild(el('div', { class: 'card bonus-intro' }, [
-        el('h3', { text: '\u2605 Бонусная задача' }),
-        el('p', { text: 'Она сложнее обычных и стоит ' + bonusQ.bonus.points + ' балла. Решишь — получишь ' + bonusQ.bonus.points + ' балла, не решишь — баллы не снимаются.' }),
-        App.btn('Решать', 'primary', function () { showQuestion(); window.scrollTo(0, 0); })
-      ]));
-    }
 
     function showQuestion() {
       var q = questions[idx];
-      if (q.bonus && !introShown) { showBonusIntro(); window.scrollTo(0, 0); return; }
       c.textContent = '';
       App.modeHeader(c, opts.title);
       var answered = false;
@@ -274,7 +261,7 @@
           buttons.forEach(function (bb) {
             bb.classList.add('locked');
           });
-          if (q.bonus && elapsedMs < 20000) {
+          if (q.bonus && elapsedMs < 30000) {
             var seconds = (Math.floor(elapsedMs / 100) / 10).toFixed(1).replace('.', ',');
             bonusTooFastMessage = 'С момента показа задачи прошло ' + seconds + ' с. ' +
               'Вряд ли за такое время можно честно решить эту задачу. ' +
@@ -318,13 +305,16 @@
           el('div', { class: 'progress-fill', style: 'width:' + (q.bonus ? 100 : Math.round(idx / regularTotal * 100)) + '%' })
         ]),
         q.bonus ? el('div', { class: 'bonus-tag', text: '\u2605 Бонус: +' + q.bonus.points + ' балла' }) : null,
+        q.bonus ? el('p', { class: 'bonus-result', text: 'Эта задача сложнее обычных. Решишь — получишь ' +
+          q.bonus.points + ' балла, не решишь — баллы не снимаются. ' +
+          'Ответы раньше чем через 30 секунд после показа условия не засчитываются.' }) : null,
         el('div', { class: 'prompt ' + (q.promptClass || ''), text: q.prompt }),
         mediaNode,
         custom ? null : optBox
       ]);
       c.appendChild(card);
       if (!custom) c.appendChild(App.bar([nextBtn]));
-      // Отсчёт начинается после показа условия, а не на экране приглашения к бонусу.
+      // Отсчёт начинается после показа карточки с условием.
       shownAt = performance.now();
     }
 
@@ -333,11 +323,6 @@
       App.modeHeader(c, opts.title);
       var final = bonusQ ? score + (bonusSolved ? bonusQ.bonus.points : 0) : score;
       var head = App.renderResultHeader(c, final, regularTotal, bonusQ ? 'Баллов:' : undefined);
-      if (bonusQ) {
-        c.appendChild(el('div', { class: 'bonus-result', text: bonusTooFastMessage || (bonusSolved
-          ? '\u2605 Бонусная задача решена: +' + bonusQ.bonus.points + ' балла'
-          : '\u2605 Бонусная задача не решена — баллы не сняты') }));
-      }
       if (!mistakes.length) {
         c.appendChild(el('div', { class: 'card note-ok', text: bonusTooFastMessage
           ? 'В основных заданиях ошибок нет.' : 'Ошибок нет — отличный результат!' }));
@@ -352,6 +337,12 @@
             m.explain ? m.explain() : null
           ]));
         });
+      }
+      if (bonusQ) {
+        c.appendChild(el('div', { class: 'bonus-result', text: bonusTooFastMessage
+          ? '\u2605 Бонусная задача. ' + bonusTooFastMessage
+          : (bonusSolved ? '\u2605 Бонусная задача решена: +' + bonusQ.bonus.points + ' балла'
+            : '\u2605 Бонусная задача не решена — баллы не сняты') }));
       }
       c.appendChild(App.bar([
         App.btn('Ещё раз', 'primary', opts.restart),
