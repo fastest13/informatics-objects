@@ -141,7 +141,7 @@ test('bonus condition, options and warning appear together without a start scree
   const card = descendants(q.container).find(node => node.classes.has('quiz-card'));
   assert(card.textContent.includes('Bonus'));
   assert(card.textContent.includes('Эта задача сложнее обычных.'));
-  assert(card.textContent.includes('30 секунд'));
+  assert(!card.textContent.includes('30 секунд'));
   assert(card.textContent.includes('Bonus correct'));
   assert(!descendants(q.container).some(node => node.tag === 'button' && node.text === 'Решать'));
 });

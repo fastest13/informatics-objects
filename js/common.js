@@ -306,8 +306,7 @@
         ]),
         q.bonus ? el('div', { class: 'bonus-tag', text: '\u2605 Бонус: +' + q.bonus.points + ' балла' }) : null,
         q.bonus ? el('p', { class: 'bonus-result', text: 'Эта задача сложнее обычных. Решишь — получишь ' +
-          q.bonus.points + ' балла, не решишь — баллы не снимаются. ' +
-          'Ответы раньше чем через 30 секунд после показа условия не засчитываются.' }) : null,
+          q.bonus.points + ' балла, не решишь — баллы не снимаются.' }) : null,
         el('div', { class: 'prompt ' + (q.promptClass || ''), text: q.prompt }),
         mediaNode,
         custom ? null : optBox
