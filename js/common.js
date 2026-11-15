@@ -74,6 +74,12 @@
     2: { img: 'images/knight-2.png', phrase: 'Не сдавайся! Попробуй ещё раз.', alt: 'Грустный мальчик сидит, обняв колени, рядом ноутбук и провод' }
   };
 
+  // Оценка «5+»: баллов больше максимума (решена бонусная задача). Только для викторин с бонусом.
+  App.GRADE_PLUS = {
+    img: 'images/knight-5.png', phrase: 'Пять с плюсом! Ты решил даже бонусную задачу!',
+    alt: App.GRADE_INFO[5].alt
+  };
+
   // Текст для «Поделиться» (чистая функция).
   App.shareText = function (modeName, grade, correct, total, label) {
     var mode = App.modes && App.modes[modeName];
@@ -146,9 +152,10 @@
   }
 
   App.renderResultHeader = function (container, correct, total, label) {
-    var grade = App.grade(correct, total);
-    var info = App.GRADE_INFO[grade];
-    var cls = grade >= 4 ? 'good' : (grade === 3 ? 'mid' : 'low');
+    var plus = correct > total;
+    var grade = plus ? '5+' : App.grade(correct, total);
+    var info = plus ? App.GRADE_PLUS : App.GRADE_INFO[grade];
+    var cls = plus || grade >= 4 ? 'good' : (grade === 3 ? 'mid' : 'low');
     var text = App.shareText(App.currentMode, grade, correct, total, label);
     var shareBtn = App.el('button', { type: 'button', class: 'btn share-btn', text: '↗ Поделиться' });
     shareBtn.addEventListener('click', function () {
@@ -170,7 +177,7 @@
         if (mascot.parentNode) mascot.parentNode.replaceChild(picture, mascot);
       });
     }
-    var box = App.el('div', { class: 'result ' + cls + ' grade-' + grade }, [
+    var box = App.el('div', { class: 'result ' + cls + ' grade-' + (plus ? '5plus' : grade) }, [
       mascot,
       App.el('div', { class: 'result-body' }, [
         App.el('div', { class: 'result-top' }, [
@@ -226,11 +233,27 @@
     var c = opts.container, el = App.el;
     var questions = opts.questions, total = questions.length;
     var idx = 0, score = 0, mistakes = [];
+    var regularTotal = questions.filter(function (x) { return !x.bonus; }).length;
+    var bonusQ = questions.filter(function (x) { return x.bonus; })[0] || null;
+    var bonusSolved = false;
+    var introShown = false;
 
-    function showQuestion() {
+    function showBonusIntro() {
+      introShown = true;
       c.textContent = '';
       App.modeHeader(c, opts.title);
+      c.appendChild(el('div', { class: 'card bonus-intro' }, [
+        el('h3', { text: '\u2605 Бонусная задача' }),
+        el('p', { text: 'Она сложнее обычных и стоит ' + bonusQ.bonus.points + ' балла. Решишь — получишь ' + bonusQ.bonus.points + ' балла, не решишь — баллы не снимаются.' }),
+        App.btn('Решать', 'primary', function () { showQuestion(); window.scrollTo(0, 0); })
+      ]));
+    }
+
+    function showQuestion() {
       var q = questions[idx];
+      if (q.bonus && !introShown) { showBonusIntro(); window.scrollTo(0, 0); return; }
+      c.textContent = '';
+      App.modeHeader(c, opts.title);
       var answered = false;
       var optBox = el('div', { class: 'options' });
       var nextBtn = App.btn(idx === total - 1 ? 'Результат' : 'Далее', 'primary', function () {
@@ -249,7 +272,7 @@
             bb.classList.add('locked');
             if (q.options[i].correct) bb.classList.add('correct');
           });
-          if (o.correct) score++;
+          if (o.correct) { if (q.bonus) bonusSolved = true; else score++; }
           else {
             b.classList.add('wrong');
             mistakes.push({
@@ -257,7 +280,8 @@
               chosen: o.review || o.text,
               correct: (q.options.filter(function (x) { return x.correct; })[0]).review ||
                        (q.options.filter(function (x) { return x.correct; })[0]).text,
-              explain: q.explain
+              explain: q.explain,
+              bonus: !!q.bonus
             });
           }
           if (q.onAnswer) q.onAnswer(o, !!o.correct);
@@ -274,12 +298,13 @@
       var custom = q.mountOptions ? !!q.mountOptions(optBox, nextBtn) : false;
       var card = el('div', { class: 'card quiz-card' }, [
         el('div', { class: 'progress-line' }, [
-          el('span', { text: 'Вопрос ' + (idx + 1) + ' из ' + total }),
+          el('span', { text: q.bonus ? 'Бонусная задача' : 'Вопрос ' + (idx + 1) + ' из ' + regularTotal }),
           el('span', { class: 'progress-score', text: 'Верно: ' + score })
         ]),
         el('div', { class: 'progress-track' }, [
-          el('div', { class: 'progress-fill', style: 'width:' + Math.round(idx / total * 100) + '%' })
+          el('div', { class: 'progress-fill', style: 'width:' + (q.bonus ? 100 : Math.round(idx / regularTotal * 100)) + '%' })
         ]),
+        q.bonus ? el('div', { class: 'bonus-tag', text: '\u2605 Бонус: +' + q.bonus.points + ' балла' }) : null,
         el('div', { class: 'prompt ' + (q.promptClass || ''), text: q.prompt }),
         mediaNode,
         custom ? null : optBox
@@ -291,7 +316,13 @@
     function showResult() {
       c.textContent = '';
       App.modeHeader(c, opts.title);
-      var head = App.renderResultHeader(c, score, total);
+      var final = bonusQ ? score + (bonusSolved ? bonusQ.bonus.points : 0) : score;
+      var head = App.renderResultHeader(c, final, regularTotal, bonusQ ? 'Баллов:' : undefined);
+      if (bonusQ) {
+        c.appendChild(el('div', { class: 'bonus-result', text: bonusSolved
+          ? '\u2605 Бонусная задача решена: +' + bonusQ.bonus.points + ' балла'
+          : '\u2605 Бонусная задача не решена — баллы не сняты' }));
+      }
       if (!mistakes.length) {
         c.appendChild(el('div', { class: 'card note-ok', text: 'Ошибок нет — отличный результат!' }));
       } else {
@@ -301,6 +332,7 @@
             el('div', { class: 'mistake-prompt', text: m.prompt }),
             el('div', { class: 'answer wrong-text', text: 'Ваш ответ: ' + m.chosen }),
             el('div', { class: 'answer right-text', text: 'Правильно: ' + m.correct }),
+            m.bonus ? el('div', { class: 'bonus-note', text: 'бонусная — баллы не сняты' }) : null,
             m.explain ? m.explain() : null
           ]));
         });

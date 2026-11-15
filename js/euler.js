@@ -95,6 +95,30 @@
     return svg;
   }
 
+  // A внутри B слева, C пересекает B справа и не касается A.
+  function aInBCrossC(spec) {
+    var S = spec.sets, svg = make(232);
+    circle(svg, 150, 140, 85, GREEN, 0.2);
+    circle(svg, 265, 140, 70, ROSE, 0.22);
+    circle(svg, 112, 145, 36, BLUE, 0.28);
+    label(svg, 135, 32, S[1], GREEN, 'middle', 150);
+    label(svg, 285, 52, S[2], ROSE, 'middle', 120);
+    line(svg, 112, 149, S[0], 13, BLUE, 'middle', 700, 58);
+    return svg;
+  }
+
+  // Три вложенных круга: A внутри B, B внутри C.
+  function nested3(spec) {
+    var S = spec.sets, svg = make(284);
+    circle(svg, 180, 165, 112, ROSE, 0.2);
+    circle(svg, 180, 198, 76, GREEN, 0.22);
+    circle(svg, 180, 229, 44, BLUE, 0.28);
+    label(svg, 180, 38, S[2], ROSE, 'middle', 300);
+    line(svg, 180, 156, S[1], 15, GREEN, 'middle', 700, 120);
+    line(svg, 180, 232, S[0], 13, BLUE, 'middle', 700, 68);
+    return svg;
+  }
+
   function rel(spec) {
     var A = spec.sets[0], B = spec.sets[1], svg = make(224);
     switch (spec.rel) {
@@ -134,6 +158,8 @@
   }
 
   App.drawEuler = function (spec) {
+    if (spec.rel === 'AinB_CcrossB') return aInBCrossC(spec);
+    if (spec.rel === 'nested3') return nested3(spec);
     if (spec.r) return spec.sets.length === 3 ? three(spec) : two(spec);
     return rel(spec);
   };
